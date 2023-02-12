@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "prayer_requests")
+@Table(name = "prophecies")
 public class Prophecy extends BaseEntity {
 
     @ManyToOne
