@@ -1,7 +1,8 @@
-package com.waci.erp.services;
+package com.waci.erp.services.impl;
 
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.models.Member;
+import com.waci.erp.services.MemberService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import com.waci.erp.shared.utils.CustomPageable;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member existsWithCode= memberDao.getMemberByPhoneNumber(member.getPhoneNumber());
         if(existsWithCode!=null&&existsWithCode.getId()!= member.getId()){
-            throw new OperationFailedException("Member with same phone number");
+            throw new OperationFailedException("Member with same phone number exists");
         }
 
         return memberDao.save(member);
