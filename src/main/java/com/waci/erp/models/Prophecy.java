@@ -1,0 +1,39 @@
+package com.waci.erp.models;
+
+import com.waci.erp.shared.models.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Entity
+@Table(name = "prayer_requests")
+public class Prophecy extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "prophecy_type_id")
+    private LookupValue type;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+    @Column(name = "details")
+    private String details;
+    @Column(name = "image_url")
+    private String imageUrl;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_fulfilled")
+    private Date dateFulfilled;
+    @Column(name = "fulfillment_notes")
+    private String fulfillmentNotes;
+
+
+
+
+}
