@@ -1,5 +1,6 @@
 package com.waci.erp.services;
 
+import com.waci.erp.dtos.LookupValueDTO;
 import com.waci.erp.models.LookupType;
 import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
@@ -16,7 +17,7 @@ public interface LookupValueService {
      * @param testimony
      * @return
      */
-    LookupValue save(LookupValue testimony);
+    LookupValue save(LookupValueDTO instance);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit

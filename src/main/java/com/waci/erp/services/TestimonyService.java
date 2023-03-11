@@ -1,7 +1,10 @@
 package com.waci.erp.services;
 
+import com.waci.erp.dtos.TestimonyDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
+import com.waci.erp.shared.searchutils.SearchRequest;
+import com.waci.erp.shared.utils.BaseSearchObject;
 
 import java.util.List;
 
@@ -14,16 +17,13 @@ public interface TestimonyService {
      * @param testimony
      * @return
      */
-    Testimony save(Testimony testimony);
+    Testimony save(TestimonyDTO testimony);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
-     * @param searchTerm
-     * @param offset
-     * @param limit
      * @return
      */
-    List<Testimony> getList(String searchTerm, int offset, int limit);
+    List<Testimony> getList(SearchRequest request);
 
     /**
      * Gets a microservice that matches a given Id

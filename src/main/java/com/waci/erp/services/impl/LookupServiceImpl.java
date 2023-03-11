@@ -2,6 +2,7 @@ package com.waci.erp.services.impl;
 
 import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
+import com.waci.erp.dtos.LookupValueDTO;
 import com.waci.erp.models.LookupType;
 import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
@@ -21,37 +22,39 @@ import java.util.List;
 @Transactional
 public class LookupServiceImpl implements LookupValueService {
     @Autowired
-    LookupValueDao memberDao;
+    LookupValueDao lookupValueDao;
 
 
     @Override
-    public LookupValue save(LookupValue member) {
-
-        if(StringUtils.isBlank(member.getValue())){
+    public LookupValue save(LookupValueDTO lookupValueDTO) {
+        if(StringUtils.isBlank(lookupValueDTO.getValue())){
             throw new OperationFailedException("Missing value");
         }
-
-        if(member.getType()==null){
+        if(lookupValueDTO.getType()==null){
             throw new OperationFailedException("Missing type");
         }
-
-        return memberDao.save(member);
+        LookupValue existsWithNameAndType=lookupValueDao.getLookupValueByTypeAndValue(lookupValueDTO.getType(), lookupValueDTO.getValue());
+        if(existsWithNameAndType!=null&&existsWithNameAndType.getId()!=lookupValueDTO.getId()){
+            throw new OperationFailedException("Lookup value with same name and type exists");
+        }
+        LookupValue lookupValue= lookupValueDTO.toDBModel();
+        return lookupValueDao.save(lookupValue);
     }
 
     @Override
     public List<LookupValue> getList(String searchTerm, int offset, int limit) {
      // return memberDao.findAll(new CustomPageable(offset,limit)).toList();
-        return memberDao.findAll();
+        return lookupValueDao.findAll();
     }
 
     @Override
     public LookupValue getById(long id) {
-        return memberDao.findById(id).orElseThrow(()->new OperationFailedException("Not found"));
+        return lookupValueDao.findById(id).orElseThrow(()->new OperationFailedException("Not found"));
     }
 
     @Override
     public List<LookupValue> getByType(LookupType type) {
-        return memberDao.findAll();
+        return lookupValueDao.findAll();
     }
 
 

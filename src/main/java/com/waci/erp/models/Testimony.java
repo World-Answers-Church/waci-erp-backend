@@ -25,7 +25,7 @@ public class Testimony extends BaseEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "*prayer_request_id")
+    @JoinColumn(name = "prayer_request_id")
     private PrayerRequest prayerRequest;
     @Column(name = "details")
     private String details;
