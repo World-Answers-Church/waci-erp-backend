@@ -1,6 +1,7 @@
 package com.waci.erp.services.impl;
 
 import com.waci.erp.daos.MemberDao;
+import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.models.Member;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
@@ -43,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getMembers(String searchTerm, int offset, int limit) {
+    public List<Member> getMembers(BaseCriteria baseCriteria) {
      // return memberDao.findAll(new CustomPageable(offset,limit)).toList();
         return memberDao.findAll();
     }

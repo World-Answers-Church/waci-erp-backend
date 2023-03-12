@@ -1,5 +1,6 @@
 package com.waci.erp.services;
 
+import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.TestimonyDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
@@ -23,7 +24,7 @@ public interface TestimonyService {
      * Gets a list of microservices following a supplied search term, offset and limit
      * @return
      */
-    List<Testimony> getList(SearchRequest request);
+    List<Testimony> getList(BaseCriteria request);
 
     /**
      * Gets a microservice that matches a given Id

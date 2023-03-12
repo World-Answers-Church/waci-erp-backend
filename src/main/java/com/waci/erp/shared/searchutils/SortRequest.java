@@ -24,4 +24,5 @@ public class SortRequest implements Serializable {
 
     private SortDirection direction;
 
+
 }

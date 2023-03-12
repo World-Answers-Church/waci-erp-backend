@@ -45,11 +45,7 @@ public class TestimonyController {
      */
     @GetMapping("/get")
     public ResponseEntity<List<Testimony>> search(BaseCriteria criteria) {
-        SearchRequest searchRequest= new SearchRequest();
-        searchRequest.addFilter(new FilterRequest());
-        searchRequest.setPage(criteria.getOffset());
-        searchRequest.setPage(criteria.getLimit());
-        List<Testimony> members= dbService.getList(searchRequest);
+        List<Testimony> members= dbService.getList(criteria);
         return ResponseEntity.ok().body(members);
 
     }

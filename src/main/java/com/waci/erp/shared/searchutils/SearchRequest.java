@@ -36,20 +36,20 @@ public class SearchRequest implements Serializable {
         return this.filters;
     }
 
-    public List<FilterRequest> addFilter(FilterRequest filterRequest) {
+    public SearchRequest addFilter(FilterRequest filterRequest) {
         if (Objects.isNull(this.filters)){
             this.filters= new ArrayList<>();
         };
         this.filters.add(filterRequest);
-        return this.filters;
+        return this;
     }
 
-    public List<FilterRequest> addSort(SortRequest sortRequest) {
+    public SearchRequest addSort(SortRequest sortRequest) {
         if (Objects.isNull(this.sorts)){
             this.sorts= new ArrayList<>();
         };
         this.sorts.add(sortRequest);
-        return this.filters;
+        return this;
     }
 
     public List<SortRequest> getSorts() {

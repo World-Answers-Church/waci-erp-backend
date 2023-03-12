@@ -33,4 +33,19 @@ public class FilterRequest implements Serializable {
 
     private transient List<Object> values;
 
+    public FilterRequest(String key, Operator operator, FieldType fieldType, Object value) {
+        this.key = key;
+        this.operator = operator;
+        this.fieldType = fieldType;
+        this.value = value;
+    }
+
+    public FilterRequest(String key, Operator operator, FieldType fieldType, List<Object> values) {
+        this.key = key;
+        this.operator = operator;
+        this.fieldType = fieldType;
+        this.values = values;
+    }
+
+
 }
