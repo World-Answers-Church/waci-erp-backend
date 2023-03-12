@@ -57,7 +57,9 @@ public class Search implements Serializable {
         if (Objects.isNull(this.filters)){
             this.filters= new ArrayList<>();
         };
-        this.filters.add(new Filter(key,Operator.LIKE,fieldType,value));
+        if(value!=null) {
+            this.filters.add(new Filter(key, Operator.LIKE, fieldType, value));
+        }
         return this;
     }
 

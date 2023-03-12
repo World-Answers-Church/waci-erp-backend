@@ -41,10 +41,7 @@ public class MemberController {
     public ResponseEntity<List<Member>> getMembers(@RequestParam("searchTerm") String searchTerm,
                                                       @RequestParam("offset") int limit,
                                                       @RequestParam("limit") int offset) {
-        BaseCriteria baseCriteria= new BaseCriteria();
-        baseCriteria.setSearchTerm(searchTerm);
-        baseCriteria.setLimit(limit);
-        baseCriteria.setOffset(offset);
+        BaseCriteria baseCriteria= new BaseCriteria(searchTerm,offset,limit);
         List<Member> members= memberService.getMembers(baseCriteria);
         return ResponseEntity.ok().body(members);
 
