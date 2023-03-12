@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FilterRequest implements Serializable {
+public class Filter implements Serializable {
 
     private static final long serialVersionUID = 6293344849078612450L;
 
@@ -33,18 +33,26 @@ public class FilterRequest implements Serializable {
 
     private transient List<Object> values;
 
-    public FilterRequest(String key, Operator operator, FieldType fieldType, Object value) {
+    public Filter(String key, Operator operator, FieldType fieldType, Object value) {
         this.key = key;
         this.operator = operator;
         this.fieldType = fieldType;
         this.value = value;
     }
 
-    public FilterRequest(String key, Operator operator, FieldType fieldType, List<Object> values) {
+    public Filter(String key, Operator operator, FieldType fieldType, List<Object> values) {
         this.key = key;
         this.operator = operator;
         this.fieldType = fieldType;
         this.values = values;
+    }
+
+    public Filter(String key, Operator operator, FieldType fieldType, Object value, Object tovalue) {
+        this.key = key;
+        this.operator = operator;
+        this.fieldType = fieldType;
+        this.value = value;
+        this.valueTo = tovalue;
     }
 
 

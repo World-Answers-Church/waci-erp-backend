@@ -13,7 +13,7 @@ import java.util.List;
 public enum Operator {
 
     EQUAL {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
             Object value = request.getFieldType().parse(request.getValue().toString());
             Expression<?> key = root.get(request.getKey());
             return cb.and(cb.equal(key, value), predicate);
@@ -21,7 +21,7 @@ public enum Operator {
     },
 
     NOT_EQUAL {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
             Object value = request.getFieldType().parse(request.getValue().toString());
             Expression<?> key = root.get(request.getKey());
             return cb.and(cb.notEqual(key, value), predicate);
@@ -29,14 +29,14 @@ public enum Operator {
     },
 
     LIKE {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
             Expression<String> key = root.get(request.getKey());
             return cb.and(cb.like(cb.upper(key), "%" + request.getValue().toString().toUpperCase() + "%"), predicate);
         }
     },
 
     IN {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
             List<Object> values = request.getValues();
             CriteriaBuilder.In<Object> inClause = cb.in(root.get(request.getKey()));
             for (Object value : values) {
@@ -47,7 +47,7 @@ public enum Operator {
     },
 
     BETWEEN {
-        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
             Object value = request.getFieldType().parse(request.getValue().toString());
             Object valueTo = request.getFieldType().parse(request.getValueTo().toString());
             if (request.getFieldType() == FieldType.DATE) {
@@ -69,6 +69,6 @@ public enum Operator {
         }
     };
 
-    public abstract <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate);
+    public abstract <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate);
 
 }

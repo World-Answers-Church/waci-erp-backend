@@ -31,7 +31,7 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     @Autowired
     LookupValueDao lookupValueDao;
-    private SearchRequest request;
+    private Search request;
 
 
     @Override
@@ -71,7 +71,9 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     @Override
     public List<Testimony> getList(BaseCriteria baseCriteria) {
-        SearchRequest request = new SearchRequest().addFilter(new FilterRequest("details", Operator.LIKE, FieldType.CHAR, baseCriteria.getSearchTerm()));
+        Search request =new Search()
+                        .addFilterLike(FieldType.CHAR, new String[]{"details",""},baseCriteria.getSearchTerm())
+                        .addSortAscending("id");
         request.setPage(baseCriteria.getOffset());
         request.setSize(baseCriteria.getLimit());
         SearchSpecification<Testimony> specification = new SearchSpecification<>(request);

@@ -4,8 +4,6 @@ import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.TestimonyDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
-import com.waci.erp.shared.searchutils.SearchRequest;
-import com.waci.erp.shared.utils.BaseSearchObject;
 
 import java.util.List;
 
