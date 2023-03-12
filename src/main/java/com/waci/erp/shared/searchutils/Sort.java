@@ -16,12 +16,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class SortRequest implements Serializable {
+public class Sort implements Serializable {
 
     private static final long serialVersionUID = 3194362295851723069L;
 
     private String key;
 
     private SortDirection direction;
+
 
 }

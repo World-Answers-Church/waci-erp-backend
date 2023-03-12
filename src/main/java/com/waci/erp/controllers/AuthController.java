@@ -3,6 +3,7 @@ package com.waci.erp.controllers;
 import com.waci.erp.dtos.MemberDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.services.MemberService;
+import com.waci.erp.shared.api.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity<MemberDTO> saveMember(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<MemberDTO> login(@RequestBody MemberDTO memberDTO) {
         MemberDTO responseDTO = new ModelMapper().map( memberService.saveMember(memberDTO.toMember()),MemberDTO.class);
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -34,12 +35,8 @@ public class AuthController {
 
     //Build get members
     @PostMapping("/refresh/token")
-    public ResponseEntity<List<MemberDTO>> getMembers(@RequestParam("searchTerm") String searchTerm,
-                                                      @RequestParam("offset") int limit,
-                                                      @RequestParam("limit") int offset) {
-        List<Member> members= memberService.getMembers(searchTerm,offset,limit);
-        List<MemberDTO> membersDTO= (List<MemberDTO>) new ModelMapper().map(members,List.class);
-        return ResponseEntity.ok().body(membersDTO);
+    public ResponseEntity<BaseResponse> getRefreshToken() {
+        return ResponseEntity.ok().body(new BaseResponse());
 
     }
 }

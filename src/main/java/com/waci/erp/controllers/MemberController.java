@@ -1,5 +1,6 @@
 package com.waci.erp.controllers;
 
+import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.MemberDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.services.MemberService;
@@ -40,7 +41,8 @@ public class MemberController {
     public ResponseEntity<List<Member>> getMembers(@RequestParam("searchTerm") String searchTerm,
                                                       @RequestParam("offset") int limit,
                                                       @RequestParam("limit") int offset) {
-        List<Member> members= memberService.getMembers(searchTerm,offset,limit);
+        BaseCriteria baseCriteria= new BaseCriteria(searchTerm,offset,limit);
+        List<Member> members= memberService.getMembers(baseCriteria);
         return ResponseEntity.ok().body(members);
 
     }

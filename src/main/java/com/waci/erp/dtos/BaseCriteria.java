@@ -11,6 +11,9 @@ public class BaseCriteria {
    private int offset=0;
    private int limit=0;
 
-
- 
+   public BaseCriteria(String searchTerm, int offset, int limit) {
+      this.searchTerm = searchTerm;
+      this.offset = offset;
+      this.limit = limit;
+   }
 }
