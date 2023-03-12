@@ -1,5 +1,6 @@
 package com.waci.erp.services;
 
+import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.models.Member;
 
 import java.util.List;
@@ -17,12 +18,10 @@ public interface MemberService {
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
-     * @param searchTerm
-     * @param offset
-     * @param limit
+     * @param baseCriteria
      * @return
      */
-    List<Member> getMembers(String searchTerm, int offset, int limit);
+    List<Member> getMembers(BaseCriteria baseCriteria);
 
     /**
      * Gets a microservice that matches a given Id

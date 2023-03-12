@@ -7,6 +7,7 @@ import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.TestimonyService;
+import com.waci.erp.shared.searchutils.FilterRequest;
 import com.waci.erp.shared.searchutils.SearchRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -45,6 +46,7 @@ public class TestimonyController {
     @GetMapping("/get")
     public ResponseEntity<List<Testimony>> search(BaseCriteria criteria) {
         SearchRequest searchRequest= new SearchRequest();
+        searchRequest.addFilter(new FilterRequest());
         searchRequest.setPage(criteria.getOffset());
         searchRequest.setPage(criteria.getLimit());
         List<Testimony> members= dbService.getList(searchRequest);
