@@ -31,6 +31,11 @@ public class Country extends BaseEntity implements Serializable {
         this.currencySymbol = currencySymbol;
     }
 
+    public Country(String name, String postalCode) {
+        this.name = name;
+        this.postalCode = postalCode;
+    }
+
     @Override
     public String toString() {
         return this.name;

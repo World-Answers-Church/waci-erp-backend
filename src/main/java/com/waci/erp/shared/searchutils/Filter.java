@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,8 +21,17 @@ import java.util.List;
 public class Filter implements Serializable {
 
     private static final long serialVersionUID = 6293344849078612450L;
+private List<Filter> orFilters;
 
+public List<Filter> addOrFilter(Filter filter){
+    if(this.orFilters==null){
+        this.orFilters= new ArrayList<>();
+    }
+    this.orFilters.add(filter);
+    return this.orFilters;
+}
     private String key;
+    private String[] keys;
 
     private Operator operator;
 
@@ -55,5 +65,10 @@ public class Filter implements Serializable {
         this.valueTo = tovalue;
     }
 
-
+    public Filter(String[] keys, Operator operator, FieldType fieldType, Object value) {
+        this.keys = keys;
+        this.operator = operator;
+        this.fieldType = fieldType;
+        this.value = value;
+    }
 }

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,12 +66,9 @@ public class Search implements Serializable {
         if (Objects.isNull(this.filters)){
             this.filters= new ArrayList<>();
         };
-        for(String key : keys){
-            if(StringUtils.isNotBlank(key)) {
-                this.filters.add(new Filter(key, Operator.LIKE, fieldType, value));
-            }
+        if(value!=null) {
+            this.filters.add( new Filter(keys,Operator.LIKE,fieldType,value));
         }
-
         return this;
     }
 

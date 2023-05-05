@@ -1,10 +1,9 @@
 package com.waci.erp.shared.models;
 
 import com.waci.erp.shared.constants.RecordStatus;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -12,7 +11,6 @@ import java.util.Date;
  */
 @MappedSuperclass
 public class BaseEntity implements Auditable {
-
     private static final long serialVersionUID = 6095671201979163425L;
 
     @Id
@@ -21,20 +19,23 @@ public class BaseEntity implements Auditable {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "record_status", nullable = false)
-    private RecordStatus recordStatus;
+    private RecordStatus recordStatus=RecordStatus.ACTIVE;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = true)
-    private User createdBy;
-    @ManyToOne
-    @JoinColumn(name = "changed_by", nullable = true)
-    private User changedBy;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_by_id", nullable = true)
+    private long createdById;
+    @Column(name = "changed_by_id", nullable = true)
+    private long changedById;
+
+    @Column(name = "created_by_username", nullable = true)
+    private String createdByUsername;
+    @Column(name = "changed_by_username", nullable = true)
+    private String changedByUsername;
+
     @Column(name = "date_created", nullable = true)
-    private Date dateCreated;
-    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dateCreated;
+
     @Column(name = "date_changed", nullable = true)
-    private Date dateChanged;
+    private LocalDateTime dateChanged;
 
     @Column(name = "custom_prop_one")
     private String customPropOne;
@@ -46,12 +47,12 @@ public class BaseEntity implements Auditable {
 
     @PrePersist
     public void prePersist() {
-        this.dateCreated = new Date();
+        this.dateCreated = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.dateChanged = new Date();
+        this.dateChanged = LocalDateTime.now();
     }
 
 
@@ -72,47 +73,57 @@ public class BaseEntity implements Auditable {
         this.recordStatus = recordStatus;
     }
 
+    public long getCreatedById() {
+        return createdById;
+    }
 
-    @Override
-    public User getCreatedBy() {
-        return this.createdBy;
+    public void setCreatedById(long createdById) {
+        this.createdById = createdById;
+    }
+
+    public long getChangedById() {
+        return changedById;
+    }
+
+    public void setChangedById(long changedById) {
+        this.changedById = changedById;
+    }
+
+    public String getCreatedByUsername() {
+        return createdByUsername;
+    }
+
+
+
+    public void setCreatedByUsername(String createdByUsername) {
+        this.createdByUsername = createdByUsername;
+    }
+
+    public String getChangedByUsername() {
+        return changedByUsername;
+    }
+
+    public void setChangedByUsername(String changedByUsername) {
+        this.changedByUsername = changedByUsername;
     }
 
     @Override
-    public void setCreatedBy(final User userAccount) {
-        this.createdBy = userAccount;
-    }
-
-
-    @Override
-    public Date getDateCreated() {
+    public LocalDateTime getDateCreated() {
         return this.dateCreated;
     }
 
     @Override
-    public void setDateCreated(final Date dateCreated) {
+    public void setDateCreated(final LocalDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-
     @Override
-    public User getChangedBy() {
-        return this.changedBy;
-    }
-
-    @Override
-    public void setChangedBy(final User changedBy) {
-        this.changedBy = changedBy;
-    }
-
-
-    @Override
-    public Date getDateChanged() {
+    public LocalDateTime getDateChanged() {
         return this.dateChanged;
     }
 
     @Override
-    public void setDateChanged(final Date dateChanged) {
+    public void setDateChanged(final LocalDateTime dateChanged) {
         this.dateChanged = dateChanged;
     }
 
@@ -138,5 +149,19 @@ public class BaseEntity implements Auditable {
     @Transient
     public boolean isSaved() {
         return !this.isNew();
+    }
+
+    public void addAuditTrail(User loggedInUser) {
+        if (loggedInUser == null)
+            return;
+
+        if (this.getCreatedById() == 0) {
+            this.setCreatedById(loggedInUser.getId());
+            this.setCreatedByUsername(loggedInUser.getFullName());
+            this.setDateCreated(LocalDateTime.now());
+        }
+        this.setChangedById(loggedInUser.getId());
+        this.setChangedByUsername(loggedInUser.getFullName());
+        this.setDateChanged(LocalDateTime.now());
     }
 }

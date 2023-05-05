@@ -1,12 +1,14 @@
 package com.waci.erp.shared.searchutils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,8 +32,17 @@ public enum Operator {
 
     LIKE {
         public <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate) {
-            Expression<String> key = root.get(request.getKey());
-            return cb.and(cb.like(cb.upper(key), "%" + request.getValue().toString().toUpperCase() + "%"), predicate);
+            List<Predicate> predicates= new ArrayList<>();
+            for(String token:request.getValue().toString().replace("  "," ").split(" ") ){
+                String searchTerm= composeLike(token);
+                if(request.getKeys()==null||request.getKeys().length==0){
+                    continue;
+                }
+                for(String attr: request.getKeys()){
+                    predicates.add(cb.or(cb.like(root.get(attr),searchTerm)));
+                }
+            }
+            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         }
     },
 
@@ -70,5 +81,22 @@ public enum Operator {
     };
 
     public abstract <T> Predicate build(Root<T> root, CriteriaBuilder cb, Filter request, Predicate predicate);
+    public static String escapeSql(String str) {
+                   if (str == null) {
+                         return null;
+                      }
+                   return StringUtils.replace(str, "'", "''");
+               }
+
+    /**
+     * This method is used to compose a textual search term.
+     *
+     * @param value
+     * @return
+     */
+    public static String composeLike(String value) {
+        value=escapeSql(value);
+        return "%" + value + "%";
+    }
 
 }
