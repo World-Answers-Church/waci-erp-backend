@@ -1,4 +1,4 @@
-package com.waci.erp.daos;
+package com.waci.erp.shared.dao;
 
 
 import com.googlecode.genericdao.search.Metadata;

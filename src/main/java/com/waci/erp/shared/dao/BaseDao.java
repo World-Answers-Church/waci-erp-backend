@@ -1,4 +1,4 @@
-package com.waci.erp.daos;
+package com.waci.erp.shared.dao;
 
 import java.math.BigInteger;
 import java.util.Optional;
@@ -7,7 +7,7 @@ import com.googlecode.genericdao.dao.jpa.GenericDAO;
 import com.waci.erp.shared.models.BaseEntity;
 import com.waci.erp.shared.models.User;
 
-public interface BaseDao<T extends BaseEntity> extends GenericDAO<T, BigInteger> {
+public interface BaseDao<T extends BaseEntity> extends GenericDAO<T, Long> {
 
     /**
      * This method is used to save changes to the database and wait for the transaction to complete.
@@ -27,7 +27,12 @@ public interface BaseDao<T extends BaseEntity> extends GenericDAO<T, BigInteger>
      */
     T saveAndFlush(T entity, User loggedInUser);
 
-    Optional<T> findById(BigInteger id);
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Optional<T> findById(Long id);
 
     /**
      * @param entity

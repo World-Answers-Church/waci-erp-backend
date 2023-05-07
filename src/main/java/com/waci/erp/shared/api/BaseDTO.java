@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class BaseDTO {
+	private long id;
 	private String status;
 	private String message;
 	private long createdById;

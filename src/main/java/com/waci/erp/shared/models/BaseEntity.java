@@ -15,7 +15,7 @@ public class BaseEntity implements Auditable {
 
     @Id
     @GeneratedValue
-    protected long id;
+    protected Long id;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "record_status", nullable = false)
@@ -41,7 +41,7 @@ public class BaseEntity implements Auditable {
     private String customPropOne;
 
     public BaseEntity() {
-        this.id = 0;
+        this.id = Long.valueOf(0);
         this.recordStatus = RecordStatus.ACTIVE;
     }
 
@@ -55,7 +55,19 @@ public class BaseEntity implements Auditable {
         this.dateChanged = LocalDateTime.now();
     }
 
+    public void addAuditTrail(User loggedInUser) {
+        if (loggedInUser == null)
+            return;
 
+        if (this.getCreatedById() == 0) {
+            this.setCreatedById(loggedInUser.getId());
+            this.setCreatedByUsername(loggedInUser.getFullName());
+            this.setDateCreated(LocalDateTime.now());
+        }
+        this.setChangedById(loggedInUser.getId());
+        this.setChangedByUsername(loggedInUser.getFullName());
+        this.setDateChanged(LocalDateTime.now());
+    }
     public long getId() {
         return this.id;
     }
@@ -149,19 +161,5 @@ public class BaseEntity implements Auditable {
     @Transient
     public boolean isSaved() {
         return !this.isNew();
-    }
-
-    public void addAuditTrail(User loggedInUser) {
-        if (loggedInUser == null)
-            return;
-
-        if (this.getCreatedById() == 0) {
-            this.setCreatedById(loggedInUser.getId());
-            this.setCreatedByUsername(loggedInUser.getFullName());
-            this.setDateCreated(LocalDateTime.now());
-        }
-        this.setChangedById(loggedInUser.getId());
-        this.setChangedByUsername(loggedInUser.getFullName());
-        this.setDateChanged(LocalDateTime.now());
     }
 }

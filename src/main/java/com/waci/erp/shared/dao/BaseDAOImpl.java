@@ -1,6 +1,7 @@
-package com.waci.erp.daos;
+package com.waci.erp.shared.dao;
 
 import com.googlecode.genericdao.dao.jpa.GenericDAOImpl;
+import com.googlecode.genericdao.search.MetadataUtil;
 import com.googlecode.genericdao.search.jpa.JPASearchProcessor;
 import com.waci.erp.shared.models.BaseEntity;
 import com.waci.erp.shared.models.User;
@@ -10,11 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.math.BigInteger;
 import java.util.Optional;
 
 @Repository
-public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, BigInteger> implements BaseDao<T> {
+public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> implements BaseDao<T> {
 
     @Autowired
     public EntityManager entityManager;
@@ -35,7 +35,9 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, BigInte
     protected JPASearchProcessor getSearchProcessor() {
         return new JPASearchProcessor(mdu);
     }
-
+    protected MetadataUtil getMetadataUtil() {
+        return new JpaAnnotationMetadataUtil();
+    }
     @Override
     public T save(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
@@ -52,7 +54,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, BigInte
     }
 
     @Override
-    public Optional<T> findById(BigInteger id) {
+    public Optional<T> findById(Long id) {
         return Optional.ofNullable(super.find(id));
     }
 

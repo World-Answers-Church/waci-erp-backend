@@ -16,16 +16,16 @@ import com.waci.erp.shared.exceptions.ResourceNotFoundException;
 import com.waci.erp.shared.models.Country;
 import com.waci.erp.shared.models.Role;
 import com.waci.erp.shared.models.User;
+import com.waci.erp.shared.utils.CustomSearchUtils;
 import com.waci.erp.shared.utils.PassEncTech4;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
-import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -83,11 +83,11 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Missing/Invalid Gender Id");
         }
         User user = new User();
-            user.setPassword(PassEncTech4.generateSecurePassword(dto.initialPassword));
-            user.setUsername(dto.username);
+        user.setPassword(PassEncTech4.generateSecurePassword(dto.initialPassword));
+        user.setUsername(dto.username);
 
         if(dto.countryId!=0){
-            Country country=countryDao.getReference(BigInteger.valueOf(dto.countryId));
+            Country country=countryDao.getReference(dto.countryId);
 
             if(country==null){
                 throw new ValidationException("Missing Country");
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         user.setGender(gender);
 
         for (long roleId : dto.roleIds) {
-            Role role = roleRepository.getReference(BigInteger.valueOf(roleId));
+            Role role = roleRepository.getReference(roleId);
             user.addRole(role);
         }
 
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if(dto.countryId!=0){
-            Country country=countryDao.getReference(BigInteger.valueOf(dto.countryId));
+            Country country=countryDao.getReference(dto.countryId);
 
             if(country==null){
                 throw new ValidationException("Missing Country");
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
         user.setGender(gender);
 
         for (long roleId : dto.roleIds) {
-            Role role = roleRepository.getReference(BigInteger.valueOf(roleId));
+            Role role = roleRepository.getReference(roleId);
             user.addRole(role);
         }
 
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User getUserById(long id) {
-        return userRepository.findById(BigInteger.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
     public UserDTO authenticateUser(AuthDTO authDTO) throws ValidationException {
@@ -209,17 +209,14 @@ public class UserServiceImpl implements UserService {
         if (!PassEncTech4.verifyUserPassword(authDTO.getPassword(), user.getPassword())) {
             throw new ValidationException("Invalid Username or Password");
         }
-
-        return UserDTO.fromModel(user);
+ return UserDTO.fromModel(user);
     }
 
 
 
     @Override
     public User getUserByUsername(String username) {
-        return
-                userRepository.searchUnique(new Search().addFilterEqual("username",username));
-
+        return userRepository.searchUnique(new Search().addFilterEqual("username",username));
     }
 
     @Override
@@ -261,18 +258,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Role> getAllRoles(Search search, int offset, int limit) {
-        search.setMaxResults(limit);
         search.setFirstResult(offset);
+        search.setMaxResults(limit);
         return roleRepository.search(search);
     }
+
+
     public long countRoles(Search search){
-       return  roleRepository.count(search);
+        return  roleRepository.count(search);
     }
+
 
     @Override
     public Role getRoleByName(String roleName) {
-        return  roleRepository.searchUnique(new Search().addFilterEqual("name",roleName));
+        return roleRepository.searchUnique(new Search().addFilterEqual("name",roleName));
     }
+
 
     @Override
     public void addRoleToUser(String username, String roleName) {
@@ -283,25 +284,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public static Search composeSearchObjectForUser(String searchTerm) {
-        Search search= new Search().addFilterEqual(FieldType.INTEGER,"recordStatus",RecordStatus.ACTIVE.ordinal());
-       search.addSortDescending("id");
-        if(StringUtils.isBlank(searchTerm)){
-            return  search;
-        }
-        return search.addFilterLike(FieldType.CHAR, new String[]{"username","lastName", "firstName"}, searchTerm);
+       Search search = CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("username","lastName", "firstName"));
+        search.addSortDesc("id");
+        return  search;
     }
 
     public static Search composeSearchObjectForRole(String searchTerm) {
-        Search search= new Search().addFilterEqual(FieldType.INTEGER,"recordStatus",RecordStatus.ACTIVE.ordinal());
-        search.addSortDescending("id");
-        if(StringUtils.isBlank(searchTerm)){
-            return  search;
-        }
-        return new Search().addFilterLike(FieldType.CHAR, new String[]{"name","description"}, searchTerm);
+        Search search = CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("name","description"));
+
+        return  search;
     }
 
 }
-
-
-
 

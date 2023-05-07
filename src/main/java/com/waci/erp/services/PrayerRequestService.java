@@ -1,5 +1,6 @@
 package com.waci.erp.services;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.PrayerRequest;
 import com.waci.erp.models.Testimony;
@@ -24,7 +25,7 @@ public interface PrayerRequestService {
      * @param limit
      * @return
      */
-    List<PrayerRequest> getList(String searchTerm, int offset, int limit);
+    List<PrayerRequest> getList(Search search, int offset, int limit);
 
     /**
      * Gets a microservice that matches a given Id

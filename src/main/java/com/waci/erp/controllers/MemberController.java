@@ -1,9 +1,11 @@
 package com.waci.erp.controllers;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.MemberDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.services.MemberService;
+import com.waci.erp.services.impl.MemberServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class MemberController {
      */
     @PostMapping("/save")
     public ResponseEntity<MemberDTO> saveMember(@RequestBody MemberDTO memberDTO) {
-        MemberDTO responseDTO = new ModelMapper().map( memberService.saveMember(memberDTO.toMember()),MemberDTO.class);
+        MemberDTO responseDTO = MemberDTO.fromModel( memberService.saveMember(memberDTO.toMember()));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -41,8 +43,8 @@ public class MemberController {
     public ResponseEntity<List<Member>> getMembers(@RequestParam("searchTerm") String searchTerm,
                                                       @RequestParam("offset") int limit,
                                                       @RequestParam("limit") int offset) {
-        BaseCriteria baseCriteria= new BaseCriteria(searchTerm,offset,limit);
-        List<Member> members= memberService.getMembers(baseCriteria);
+        Search baseCriteria= MemberServiceImpl.composeSearchObject(searchTerm);
+        List<Member> members= memberService.getMembers(baseCriteria,offset,limit);
         return ResponseEntity.ok().body(members);
 
     }

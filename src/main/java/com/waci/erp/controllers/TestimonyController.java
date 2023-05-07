@@ -1,9 +1,11 @@
 package com.waci.erp.controllers;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.TestimonyDTO;
 import com.waci.erp.models.Testimony;
 import com.waci.erp.services.TestimonyService;
+import com.waci.erp.services.impl.TestimonyServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +28,19 @@ public class TestimonyController {
      * @param testimonyDTO
      * @return
      */
-    @PostMapping("/save")
+    @PostMapping("")
     public ResponseEntity<TestimonyDTO> save(@RequestBody TestimonyDTO testimonyDTO) {
         TestimonyDTO responseDTO = new ModelMapper().map( dbService.save(testimonyDTO), TestimonyDTO.class);
         return ResponseEntity.ok().body(responseDTO);
     }
 
 
-    /**
-     *
-     * @param criteria
-     * @return
-     */
-    @GetMapping("/get")
-    public ResponseEntity<List<Testimony>> search(BaseCriteria criteria) {
-        List<Testimony> members= dbService.getList(criteria);
+    @GetMapping("")
+    public ResponseEntity<List<Testimony>> search(@RequestParam("searchTerm") String searchTerm,
+                                                  @RequestParam("offset") int limit,
+                                                  @RequestParam("limit") int offset) {
+        Search search= TestimonyServiceImpl.composeSearchObject(searchTerm);
+        List<Testimony> members= dbService.getList(search,offset,limit);
         return ResponseEntity.ok().body(members);
 
     }

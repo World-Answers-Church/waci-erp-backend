@@ -2,11 +2,11 @@ package com.waci.erp.daos;
 
 import com.waci.erp.models.Member;
 import com.waci.erp.models.PrayerRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.waci.erp.shared.dao.BaseDao;
 
 /**
  * Data Access Object class for {@link Member}
  */
-public interface PrayerRequestDao extends JpaRepository<PrayerRequest, Long> {
+public interface PrayerRequestDao extends BaseDao<PrayerRequest> {
 }
 

@@ -1,5 +1,6 @@
 package com.waci.erp.services.impl;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.dtos.LookupValueDTO;
@@ -33,7 +34,7 @@ public class LookupServiceImpl implements LookupValueService {
         if(lookupValueDTO.getType()==null){
             throw new OperationFailedException("Missing type");
         }
-        LookupValue existsWithNameAndType=lookupValueDao.getLookupValueByTypeAndValue(lookupValueDTO.getType(), lookupValueDTO.getValue());
+        LookupValue existsWithNameAndType=getLookupValueByTypeAndValue(lookupValueDTO.getType(), lookupValueDTO.getValue());
         if(existsWithNameAndType!=null&&existsWithNameAndType.getId()!=lookupValueDTO.getId()){
             throw new OperationFailedException("Lookup value with same name and type exists");
         }
@@ -41,10 +42,18 @@ public class LookupServiceImpl implements LookupValueService {
         return lookupValueDao.save(lookupValue);
     }
 
+    public LookupValue getLookupValueByTypeAndValue(LookupType lookupType, String  name){
+        return lookupValueDao.searchUnique(new Search().addFilterEqual("type",lookupType)
+
+                .addFilterEqual("value",name));
+
+    }
+
     @Override
-    public List<LookupValue> getList(String searchTerm, int offset, int limit) {
-     // return memberDao.findAll(new CustomPageable(offset,limit)).toList();
-        return lookupValueDao.findAll();
+    public List<LookupValue> getList(Search search, int offset, int limit) {
+        search.setMaxResults(limit);
+        search.setFirstResult(offset);
+        return lookupValueDao.search(search);
     }
 
     @Override
@@ -56,6 +65,7 @@ public class LookupServiceImpl implements LookupValueService {
     public List<LookupValue> getByType(LookupType type) {
         return lookupValueDao.findAll();
     }
+
 
 
 }
