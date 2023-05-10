@@ -49,6 +49,8 @@ public interface LookupValueService {
      * @param name
      * @return
      */
-    public LookupValue getLookupValueByTypeAndValue(LookupType lookupType, String  name);
+   LookupValue getLookupValueByTypeAndValue(LookupType lookupType, String  name);
+
+    LookupValue getLookupValueByTypeAndValue(LookupType lookupType, int  id);
 
 }

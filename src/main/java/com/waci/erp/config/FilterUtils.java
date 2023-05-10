@@ -14,8 +14,8 @@ public class FilterUtils {
     private static Set<String> allowedEndpoints = new HashSet<>(
             Arrays.asList("/api/health",
                     "/api/v1/status",
-                    "swagger-ui",
-                    "api-docs",
+                    "/swagger-ui",
+                    "/api-docs",
                     "/api/v1/auth/refresh/token",
                     "api/v1/auth/login")
     );
@@ -23,7 +23,7 @@ public class FilterUtils {
     public static boolean allowedAuth(String path) {
 
         for (String string : allowedEndpoints) {
-            if (path.contains(string)) {
+            if (path.startsWith(string)) {
                 return true;
             }
         }

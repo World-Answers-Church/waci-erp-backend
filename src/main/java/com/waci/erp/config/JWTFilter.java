@@ -50,7 +50,7 @@ public class JWTFilter extends GenericFilterBean {
                 String accessToken = authorisationHeader.substring("Bearer ".length());
                 tokenProvider.validateToken(accessToken);
                 filterChain.doFilter(httpServletRequest, httpServletResponse);
-            } catch (JWTVerificationException ex) {
+            } catch (Exception ex) {
                 httpServletResponse.setHeader("error", ex.getMessage());
                 httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
                 httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());

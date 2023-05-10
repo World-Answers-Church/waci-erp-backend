@@ -8,16 +8,17 @@ import org.modelmapper.ModelMapper;
 
 @Data
 public class MemberDTO extends BaseDTO {
-    private int id;
     private String firstName;
     private String lastName;
-    private Salutation salutation;
+    private String salutationName;
+    private int salutationId;
     private String middleName;
     private String physicalAddress;
     private String phoneNumber;
     private String emailAddress;
     private int yearJoined;
-    private String occupation;
+    private String occupationName;
+    private int occupationId;
     private String nin;
     private String imageUrl;
 
@@ -28,7 +29,7 @@ public class MemberDTO extends BaseDTO {
         dto.setEmailAddress(model.getEmailAddress());
         dto.setImageUrl(model.getImageUrl());
         dto.setNin(model.getNin());
-        dto.setOccupation(model.getOccupation());
+        dto.setOccupationName(model.getOccupation().getValue());
         dto.setPhoneNumber(model.getPhoneNumber());
         dto.setEmailAddress(model.getEmailAddress());
 

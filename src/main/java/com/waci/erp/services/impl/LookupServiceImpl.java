@@ -9,6 +9,7 @@ import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
+import com.waci.erp.shared.constants.RecordStatus;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import com.waci.erp.shared.exceptions.ValidationFailedException;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,6 @@ import java.util.List;
 public class LookupServiceImpl implements LookupValueService {
     @Autowired
     LookupValueDao lookupValueDao;
-
 
     @Override
     public LookupValue save(LookupValueDTO lookupValueDTO) {
@@ -44,8 +44,13 @@ public class LookupServiceImpl implements LookupValueService {
 
     public LookupValue getLookupValueByTypeAndValue(LookupType lookupType, String  name){
         return lookupValueDao.searchUnique(new Search().addFilterEqual("type",lookupType)
-
                 .addFilterEqual("value",name));
+
+    }
+    public LookupValue getLookupValueByTypeAndValue(LookupType lookupType, int  id){
+        return lookupValueDao.searchUnique(new Search().addFilterEqual("type",lookupType)
+
+                .addFilterEqual("id",id));
 
     }
 
@@ -63,7 +68,10 @@ public class LookupServiceImpl implements LookupValueService {
 
     @Override
     public List<LookupValue> getByType(LookupType type) {
-        return lookupValueDao.findAll();
+        Search search= new Search()
+                .addFilterEqual("recordStatus", RecordStatus.ACTIVE)
+                .addFilterEqual("type",type);
+        return lookupValueDao.search(search);
     }
 
 
