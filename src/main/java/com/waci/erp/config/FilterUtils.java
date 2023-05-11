@@ -12,12 +12,14 @@ public class FilterUtils {
 
     private static String v2EndPoint = "/v2";
     private static Set<String> allowedEndpoints = new HashSet<>(
-            Arrays.asList("/api/health",
+            Arrays.asList(
+                    "/api/v1/health",
                     "/api/v1/status",
                     "/swagger-ui",
                     "/api-docs",
                     "/api/v1/auth/refresh/token",
-                    "api/v1/auth/login")
+                    "/api/v1/auth/login"
+            )
     );
 
     public static boolean allowedAuth(String path) {

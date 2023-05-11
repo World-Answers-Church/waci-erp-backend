@@ -11,14 +11,14 @@ public class MemberDTO extends BaseDTO {
     private String firstName;
     private String lastName;
     private String salutationName;
-    private int salutationId;
+    private long salutationId;
     private String middleName;
     private String physicalAddress;
     private String phoneNumber;
     private String emailAddress;
     private int yearJoined;
     private String occupationName;
-    private int occupationId;
+    private long occupationId;
     private String nin;
     private String imageUrl;
 
@@ -32,6 +32,9 @@ public class MemberDTO extends BaseDTO {
         dto.setOccupationName(model.getOccupation().getValue());
         dto.setPhoneNumber(model.getPhoneNumber());
         dto.setEmailAddress(model.getEmailAddress());
+        dto.setOccupationId(model.getOccupation().getId());
+        dto.setSalutationId(model.getSalutation().getId());
+        dto.setSalutationName(model.getSalutation().getValue());
 
 
         dto.setId(model.getId());
