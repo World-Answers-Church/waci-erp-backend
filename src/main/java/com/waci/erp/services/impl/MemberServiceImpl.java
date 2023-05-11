@@ -52,12 +52,12 @@ LookupValueService lookupValueDao;
             throw new OperationFailedException("Member with same phone number exists");
         }
 
-        LookupValue salutation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE,dto.getSalutationId());
+        LookupValue salutation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, (int) dto.getSalutationId());
         if(salutation==null){
             throw new OperationFailedException("Invalid salutation value");
         }
 
-        LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION,dto.getOccupationId());
+        LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION, (int) dto.getOccupationId());
         if(occupation==null){
             throw new OperationFailedException("Invalid occupation value");
         }
