@@ -19,9 +19,9 @@ public class Member extends BaseEntity {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "salutation")
-    private Salutation salutation;
+    @ManyToOne
+    @JoinColumn(name = "salutation_category")
+    private LookupValue salutation;
     @Column(name = "middle_name")
     private String middleName;
     @Column(name = "physical_address")
@@ -32,8 +32,9 @@ public class Member extends BaseEntity {
     private String emailAddress;
     @Column(name = "year_joined")
     private int yearJoined;
-    @Column(name = "occupation")
-    private String occupation;
+    @ManyToOne
+    @JoinColumn(name = "occupation_category")
+    private LookupValue occupation;
     @Column(name = "nin")
     private String nin;
     @Column(name = "image_url")

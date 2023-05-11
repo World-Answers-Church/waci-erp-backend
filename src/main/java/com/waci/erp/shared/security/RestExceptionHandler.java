@@ -1,5 +1,6 @@
 package com.waci.erp.shared.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.waci.erp.shared.api.BaseResponse;
 import com.waci.erp.shared.exceptions.ValidationFailedException;
 import org.springframework.core.Ordered;
@@ -34,12 +35,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new BaseResponse(exception.getMessage(),false),HttpStatus.BAD_REQUEST);
     }
 
-    //Handles uncaught exceptions
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleGeneralException(Exception exception) {
+    //Handles ValidationFailedException
+    @ExceptionHandler(JWTVerificationException.class)
+    protected ResponseEntity<Object> handleJWTVerificationException(JWTVerificationException exception) {
         exception.printStackTrace();
-        return buildResponseEntity(new BaseResponse(exception.getMessage(),false),HttpStatus.INTERNAL_SERVER_ERROR);
+        return buildResponseEntity(new BaseResponse(exception.getMessage(),false),HttpStatus.UNAUTHORIZED);
     }
+
+  //  Handles ValidationFailedException
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleException(Exception exception) {
+
+        exception.printStackTrace();
+        return buildResponseEntity(new BaseResponse(exception.getMessage(),false),HttpStatus.BAD_REQUEST);
+    }
+
+
 
     //Maps exception to response entity
     private ResponseEntity<Object> buildResponseEntity(BaseResponse responseObject,HttpStatus status) {

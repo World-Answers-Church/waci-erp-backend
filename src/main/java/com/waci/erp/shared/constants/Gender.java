@@ -1,19 +1,23 @@
 package com.waci.erp.shared.constants;
 
+import java.util.Arrays;
+
 /**
  *
  * @author RayGdhrt
  */
 public enum Gender {
-    MALE("Male"),
-    FEMALE("Female"),
-    RATHER_NOT_SAY("Rather not say"),
-    OTHER("Other");
+    MALE(1,"Male"),
+    FEMALE(2,"Female"),
+    RATHER_NOT_SAY(3,"Rather not say"),
+    OTHER(4,"Other");
 
     private String uiName;
+    private int id;
 
-    Gender(String name) {
+    Gender(int id,String name) {
         this.uiName = name;
+        this.id=id;
     }
 
     public String getUiName() {
@@ -24,4 +28,11 @@ public enum Gender {
         this.uiName = uiName;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public static Gender fromId(int id){
+        return Arrays.stream(Gender.values()).filter(gender -> gender.id == id).findFirst().orElse(null);
+    }
 }

@@ -6,26 +6,36 @@
 package com.waci.erp.shared.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author RayGdhrt
  */
 public interface Auditable extends Serializable {
-    public User getCreatedBy();
 
-    public void setCreatedBy(User user);
 
-    public Date getDateCreated();
+    public long getCreatedById();
 
-    public void setDateCreated(Date date);
+    public void setCreatedById(long createdById);
 
-    public User getChangedBy();
+    public long getChangedById();
 
-    public void setChangedBy(User user);
+    public void setChangedById(long changedById);
 
-    public Date getDateChanged();
+    public String getCreatedByUsername() ;
 
-    public void setDateChanged(Date date);
+    public void setCreatedByUsername(String createdByUsername) ;
+
+    public String getChangedByUsername() ;
+
+    public void setChangedByUsername(String changedByUsername) ;
+
+    public LocalDateTime getDateCreated();
+
+    public void setDateCreated(LocalDateTime date);
+
+    public LocalDateTime getDateChanged();
+
+    public void setDateChanged(LocalDateTime date);
 }

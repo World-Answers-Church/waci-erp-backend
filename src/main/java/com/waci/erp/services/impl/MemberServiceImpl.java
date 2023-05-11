@@ -1,23 +1,22 @@
 package com.waci.erp.services.impl;
 
+import com.googlecode.genericdao.search.Search;
+import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
-import com.waci.erp.dtos.BaseCriteria;
+import com.waci.erp.dtos.MemberDTO;
+import com.waci.erp.models.LookupType;
+import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
-import com.waci.erp.shared.searchutils.FieldType;
-import com.waci.erp.shared.searchutils.Search;
-import com.waci.erp.shared.searchutils.SearchSpecification;
-import com.waci.erp.shared.utils.CustomPageable;
+import com.waci.erp.shared.utils.CustomSearchUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,38 +25,70 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     MemberDao memberDao;
 
-
+@Autowired
+LookupValueService lookupValueDao;
     @Override
-    public Member saveMember(Member member) {
-        if(member.getYearJoined()==0){
+    public Member saveMember(MemberDTO dto) {
+        Member member= new Member();
+        if(dto.getId()>0){
+            member=getMemberById(dto.getId());
+            if(member==null){
+                throw new OperationFailedException("Member No Found with Id");
+            }
+        }
+        if(dto.getYearJoined()==0){
             throw new OperationFailedException("Missing joined year");
         }
-        if(StringUtils.isBlank(member.getFirstName())){
+        if(StringUtils.isBlank(dto.getFirstName())){
             throw new OperationFailedException("Missing first name");
         }
 
-        if(StringUtils.isBlank(member.getLastName())){
+        if(StringUtils.isBlank(dto.getLastName())){
             throw new OperationFailedException("Missing last name");
         }
 
-        Member existsWithCode= memberDao.getMemberByPhoneNumber(member.getPhoneNumber());
-        if(existsWithCode!=null&&existsWithCode.getId()!= member.getId()){
+        Member existsWithCode= getMemberByPhoneNumber(dto.getPhoneNumber());
+        if(existsWithCode!=null&&existsWithCode.getId()!= dto.getId()){
             throw new OperationFailedException("Member with same phone number exists");
         }
+
+        LookupValue salutation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE,dto.getSalutationId());
+        if(salutation==null){
+            throw new OperationFailedException("Invalid salutation value");
+        }
+
+        LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION,dto.getOccupationId());
+        if(occupation==null){
+            throw new OperationFailedException("Invalid occupation value");
+        }
+
+
+        member.setId(dto.getId());
+        member.setEmailAddress(dto.getEmailAddress());
+        member.setFirstName(dto.getFirstName());
+        member.setImageUrl(dto.getImageUrl());
+        member.setLastName(dto.getLastName());
+        member.setOccupation(occupation);
+        member.setNin(dto.getNin());
+        member.setPhoneNumber(dto.getPhoneNumber());
+        member.setPhysicalAddress(dto.getPhysicalAddress());
+        member.setSalutation(salutation);
+        member.setMiddleName(dto.getMiddleName());
+        member.setYearJoined(dto.getYearJoined());
 
         return memberDao.save(member);
     }
 
     @Override
-    public List<Member> getMembers(BaseCriteria baseCriteria) {
-        Search request =new Search()
-                .addFilterLike(FieldType.CHAR, new String[]{"firstName","lastName","middleName","physicalAddress","phoneNumber","emailAddress","nin","occupation"},baseCriteria.getSearchTerm())
-                .addSortDescending("id");
-        request.setPage(baseCriteria.getOffset());
-        request.setSize(baseCriteria.getLimit());
-        SearchSpecification<Member> specification = new SearchSpecification<>(request);
-        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
-        return memberDao.findAll(specification, pageable).toList();
+    public List<Member> getMembers(Search search,int offset, int limit ) {
+        search.setMaxResults(limit);
+        search.setFirstResult(offset);
+        return memberDao.search(search);
+    }
+
+    @Override
+    public int countMembers(Search search ) {
+        return memberDao.count(search);
     }
 
     @Override
@@ -67,8 +98,21 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member getMemberByPhoneNumber(String phoneNumber) {
-        return memberDao.getMemberByPhoneNumber(phoneNumber);
+        return memberDao.searchUnique(new Search().addFilterEqual("phoneNumber",phoneNumber));
     }
 
+    public static Search composeSearchObject(String searchTerm) {
+        Search search = CustomSearchUtils.generateSearchTerms(searchTerm,
+                Arrays.asList(
+                        "firstName",
+                        "lastName",
+                        "middleName",
+                        "physicalAddress",
+                        "phoneNumber",
+                        "emailAddress",
+                        "nin",
+                        "occupation"));
 
+        return  search;
+    }
 }

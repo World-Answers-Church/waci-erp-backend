@@ -1,6 +1,8 @@
 package com.waci.erp.services;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.BaseCriteria;
+import com.waci.erp.dtos.MemberDTO;
 import com.waci.erp.models.Member;
 
 import java.util.List;
@@ -14,14 +16,16 @@ public interface MemberService {
      * @param microservice
      * @return
      */
-    Member saveMember(Member microservice);
+    Member saveMember(MemberDTO memberDTO);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
-     * @param baseCriteria
+     * @param search
      * @return
      */
-    List<Member> getMembers(BaseCriteria baseCriteria);
+    List<Member> getMembers(Search search,int offset, int limit);
+
+   int countMembers(Search search);
 
     /**
      * Gets a microservice that matches a given Id
@@ -32,7 +36,7 @@ public interface MemberService {
 
     /**
      * Gets a microservice that matches a given code
-     * @param code
+     * @param phoneNumber
      * @return
      */
     Member getMemberByPhoneNumber(String phoneNumber);

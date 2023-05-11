@@ -1,9 +1,9 @@
 package com.waci.erp.config;
 
-import com.waci.erp.shared.security.HttpConstants;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.waci.erp.shared.security.TokenProvider;
-import org.hibernate.dialect.Sybase11Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -15,8 +15,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * '
@@ -28,16 +26,13 @@ public class JWTFilter extends GenericFilterBean {
     @Autowired
     TokenProvider tokenProvider;
 
-    private static final List<String> allowedPaths = Arrays.asList(
-            "/api/health",
-            "/api/v1/status"
-    );
+
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        System.out.println("Endpoint hit on >>>"+httpServletRequest.getRequestURI());
+        System.out.println("Endpoint hit on >>>" + httpServletRequest.getRequestURI());
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET,PUT, OPTIONS, DELETE");
@@ -47,20 +42,18 @@ public class JWTFilter extends GenericFilterBean {
             httpServletResponse.setStatus(200);
             return;
         }
-        if (allowedPaths.contains(httpServletRequest.getRequestURI())) {
+        if (FilterUtils.allowedAuth(httpServletRequest.getRequestURI())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             try {
-               // String authorisationToken = httpServletRequest.getHeader(HttpConstants.AUTHORIZATION_HEADER);
-               // String deviceId = httpServletRequest.getHeader(HttpConstants.DEVICE_ID_HEADER);
-                    //validate with BO
-              //  tokenProvider.validateToken(authorisationToken);
-
+                String authorisationHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+                String accessToken = authorisationHeader.substring("Bearer ".length());
+                tokenProvider.validateToken(accessToken);
                 filterChain.doFilter(httpServletRequest, httpServletResponse);
             } catch (Exception ex) {
                 httpServletResponse.setHeader("error", ex.getMessage());
-                httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
-                httpServletResponse.sendError(HttpStatus.FORBIDDEN.value());
+                httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+                httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
 
             }
 

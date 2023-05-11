@@ -4,6 +4,8 @@
  */
 package com.waci.erp.shared.models;
 
+import com.waci.erp.shared.constants.PermissionConstant;
+import com.waci.erp.shared.constants.SecurityConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,24 +19,18 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Role extends BaseEntity {
 
-    public static final String SUPER_ADMIN_ROLE = "Super Admin";
-    public static final String ADMIN_ROLE = "Admin";
-    public static final String STORE_MANAGER = "Store Manager";
-    public static final String CUSTOMER = "Customer";
     @Column(name = "role_name", nullable = false)
     private String name;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false,columnDefinition = "TEXT")
     private String description;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "role_permissions", joinColumns = {
-            @JoinColumn(name = "role_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "permission_id")})
-    private Set<Permission> permissions;
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    @ElementCollection( targetClass = PermissionConstant.class)
+    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "permissions", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Set<PermissionConstant> permissions;
 
 
-    public Role(final String name, final String description, final Set<Permission> permissions) {
+    public Role(final String name, final String description, final Set<PermissionConstant> permissions) {
         this.name = name;
         this.description = description;
         this.permissions = permissions;
@@ -48,47 +44,24 @@ public class Role extends BaseEntity {
     }
 
 
-    public void addPermission(final Permission permission) {
+    public void addPermission(final PermissionConstant permission) {
+        if(this.permissions==null){
+            this.permissions= new HashSet<>();
+        }
         this.getPermissions().add(permission);
     }
 
-    public void removePermission(final Permission permission) {
+    public void removePermission(final PermissionConstant permission) {
         if (this.getPermissions().contains(permission)) {
             this.getPermissions().remove(permission);
         }
     }
 
 
-    public Set<User> getUsers() {
-        return this.users;
-    }
 
-    public void setUsers(final Set<User> users) {
-        this.users = users;
-    }
-
-    public void addUser(final User user) {
-        if (this.users == null) {
-            this.users = new HashSet<User>();
-        }
-        if (user != null && !this.users.contains(user)) {
-            this.users.add(user);
-            user.addRole(this);
-        }
-    }
-
-    public void removeUser(final User user) {
-        if (user == null || this.users == null || this.users.size() == 0) {
-            return;
-        }
-        if (this.getUsers().contains(user)) {
-            this.getUsers().remove(user);
-            user.removeRole(this);
-        }
-    }
 
     public boolean checkIfDefaultAdminRole() {
-        return this.getName().equals("ROLE_ADMINISTRATOR");
+        return this.getName().equals(SecurityConstants.SUPER_ADMIN_ROLE);
     }
 
     @Override
@@ -109,10 +82,10 @@ public class Role extends BaseEntity {
         return (this.id != 0) ? (int) (this.getClass().hashCode() + this.id) : super.hashCode();
     }
 
-    public boolean hasPermission(final String perm) {
+    public boolean hasPermission(final PermissionConstant perm) {
         if (this.permissions != null) {
-            for (final Permission permission : this.permissions) {
-                if (permission.getName().equalsIgnoreCase(perm)) {
+            for (final PermissionConstant permission : this.permissions) {
+                if (permission.equals(perm)) {
                     return true;
                 }
             }

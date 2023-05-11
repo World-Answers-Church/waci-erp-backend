@@ -4,7 +4,10 @@
  */
 package com.waci.erp.shared.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.waci.erp.shared.constants.Gender;
+import com.waci.erp.shared.constants.PermissionConstant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,16 +21,18 @@ import java.util.*;
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-    public static final String DEFAULT_ADMIN = "administrator";
-    public static final String DEFAULT_API_USER = "4bd129cc86eef3870ede85d69df47a61638d1b96";
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
+    @JsonIgnore
     @Column(name = "api_password")
     private String apiPassword;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_users", joinColumns = {
@@ -35,7 +40,9 @@ public class User extends BaseEntity {
             @JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
+    @JsonIgnore
     private String clearTextPassword;
+    @JsonIgnore
     @Column(name = "salt", nullable = false)
     private String salt = "RAYGDHRT";
 
@@ -58,6 +65,7 @@ public class User extends BaseEntity {
     private Date dateOfLastPasswordChange;
     private boolean changePassword;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = true)
     private Country country;
@@ -129,8 +137,8 @@ public class User extends BaseEntity {
     }
 
 
-    public List<Permission> findPermissions() {
-        List<Permission> permissions = null;
+    public List<PermissionConstant> findPermissions() {
+        List<PermissionConstant> permissions = null;
         if (this.roles != null && !this.roles.isEmpty()) {
             permissions = new ArrayList<>();
             for (final Role role : this.roles) {
@@ -169,7 +177,7 @@ public class User extends BaseEntity {
         return this.firstName + " " + this.lastName;
     }
 
-    public boolean hasPermission(final String perm) {
+    public boolean hasPermission(final PermissionConstant perm) {
         if (this.hasAdministrativePrivileges()) {
             return true;
         }

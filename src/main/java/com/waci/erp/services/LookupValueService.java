@@ -1,5 +1,6 @@
 package com.waci.erp.services;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.LookupValueDTO;
 import com.waci.erp.models.LookupType;
 import com.waci.erp.models.LookupValue;
@@ -14,10 +15,10 @@ import java.util.List;
 public interface LookupValueService {
     /**
      * Saves a microservice to the database
-     * @param testimony
+     * @param lookupValueDTO
      * @return
      */
-    LookupValue save(LookupValueDTO instance);
+    LookupValue save(LookupValueDTO lookupValueDTO);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
@@ -26,7 +27,7 @@ public interface LookupValueService {
      * @param limit
      * @return
      */
-    List<LookupValue> getList(String searchTerm, int offset, int limit);
+    List<LookupValue> getList(Search searchTerm, int offset, int limit);
 
     /**
      * Gets a microservice that matches a given Id
@@ -41,5 +42,15 @@ public interface LookupValueService {
      * @return
      */
     List<LookupValue> getByType(LookupType member);
+
+    /**
+     *
+     * @param lookupType
+     * @param name
+     * @return
+     */
+   LookupValue getLookupValueByTypeAndValue(LookupType lookupType, String  name);
+
+    LookupValue getLookupValueByTypeAndValue(LookupType lookupType, int  id);
 
 }

@@ -1,23 +1,24 @@
 package com.waci.erp.services.impl;
 
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.daos.TestimonyDao;
-import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.TestimonyDTO;
 import com.waci.erp.models.LookupType;
 import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
+import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.TestimonyService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
-import com.waci.erp.shared.searchutils.*;
+import com.waci.erp.shared.utils.CustomSearchUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,8 +31,7 @@ public class TestimonyServiceImpl implements TestimonyService {
     MemberDao memberDao;
 
     @Autowired
-    LookupValueDao lookupValueDao;
-    private Search request;
+    LookupValueService lookupValueService;
 
 
     @Override
@@ -53,12 +53,12 @@ public class TestimonyServiceImpl implements TestimonyService {
             throw new OperationFailedException("Missing type name");
         }
 
-        Member member = memberDao.getReferenceById(instance.getMemberId());
+        Member member = memberDao.getReference(instance.getMemberId());
         if (member == null) {
             throw new OperationFailedException("Member with Id not found");
         }
 
-        LookupValue type = lookupValueDao.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, instance.getTypeName());
+        LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, instance.getTypeName());
         if (type == null) {
             throw new OperationFailedException("Type Not Found");
         }
@@ -70,15 +70,10 @@ public class TestimonyServiceImpl implements TestimonyService {
     }
 
     @Override
-    public List<Testimony> getList(BaseCriteria baseCriteria) {
-        Search request =new Search()
-                        .addFilterLike(FieldType.CHAR, new String[]{"details",""},baseCriteria.getSearchTerm())
-                        .addSortAscending("id");
-        request.setPage(baseCriteria.getOffset());
-        request.setSize(baseCriteria.getLimit());
-        SearchSpecification<Testimony> specification = new SearchSpecification<>(request);
-        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
-        return testimonyDao.findAll(specification, pageable).toList();
+    public List<Testimony> getList(Search search, int offset, int limit) {
+        search.setMaxResults(limit);
+        search.setFirstResult(offset);
+        return testimonyDao.search(search);
     }
 
     @Override
@@ -87,9 +82,15 @@ public class TestimonyServiceImpl implements TestimonyService {
     }
 
     @Override
-    public List<Testimony> getByMember(Member type) {
-        return testimonyDao.findAll();
-    }
+    public List<Testimony> getByMember(Member member) {
+        Search search= new Search().addFilterEqual("member",member);
 
+        return testimonyDao.searchUnique(search);
+    }
+    public static Search composeSearchObject(String searchTerm) {
+        Search search = CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("name","description"));
+
+        return  search;
+    }
 
 }

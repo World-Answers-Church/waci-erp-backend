@@ -1,12 +1,9 @@
 package com.waci.erp.services.impl;
 
-import com.waci.erp.daos.LookupValueDao;
+import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.PrayerRequestDao;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.PrayerRequest;
-import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.PrayerRequestService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +35,10 @@ public class PrayerRequestServiceImpl implements PrayerRequestService {
     }
 
     @Override
-    public List<PrayerRequest> getList(String searchTerm, int offset, int limit) {
-     // return memberDao.findAll(new CustomPageable(offset,limit)).toList();
-        return memberDao.findAll();
+    public List<PrayerRequest> getList(Search search, int offset, int limit) {
+        search.setMaxResults(limit);
+        search.setFirstResult(offset);
+        return memberDao.search(search);
     }
 
     @Override

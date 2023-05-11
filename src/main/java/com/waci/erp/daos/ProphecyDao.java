@@ -1,13 +1,11 @@
 package com.waci.erp.daos;
 
-import com.waci.erp.models.Member;
-import com.waci.erp.models.PrayerRequest;
 import com.waci.erp.models.Prophecy;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.waci.erp.shared.dao.BaseDao;
 
 /**
- * Data Access Object class for {@link Member}
+ * Data Access Object class for {@link Prophecy}
  */
-public interface ProphecyDao extends JpaRepository<Prophecy, Long> {
+public interface ProphecyDao extends BaseDao<Prophecy> {
 }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author RayGdhrt
  */
 @ResponseStatus(value = HttpStatus.CONFLICT)
-public class ValidationFailedException extends Exception {
+public class ValidationFailedException extends RuntimeException {
 
     private String message;
 
