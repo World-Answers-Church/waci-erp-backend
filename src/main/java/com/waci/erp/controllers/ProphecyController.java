@@ -1,14 +1,11 @@
 package com.waci.erp.controllers;
 
 import com.googlecode.genericdao.search.Search;
-import com.waci.erp.dtos.BaseCriteria;
-import com.waci.erp.dtos.TestimonyDTO;
-import com.waci.erp.models.Testimony;
-import com.waci.erp.services.TestimonyService;
-import com.waci.erp.services.impl.TestimonyServiceImpl;
+import com.waci.erp.dtos.ProphecyDTO;
+import com.waci.erp.services.ProphecyService;
+import com.waci.erp.services.impl.ProphecyServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,32 +15,32 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/testimonies")
-public class TestimonyController {
+@RequestMapping("/api/v1/prophecies")
+public class ProphecyController {
 
     @Autowired
-    TestimonyService dbService;
+    ProphecyService dbService;
 
     /**
      * Endpoint to register a microservice
      *
-     * @param testimonyDTO
+     * @param prophecyDTO
      * @return
      */
     @PostMapping("")
-    public ResponseEntity<TestimonyDTO> save(@RequestBody TestimonyDTO testimonyDTO) {
-        TestimonyDTO responseDTO = new TestimonyDTO().fromModel( dbService.save(testimonyDTO));
+    public ResponseEntity<ProphecyDTO> save(@RequestBody ProphecyDTO prophecyDTO) {
+        ProphecyDTO responseDTO = new ProphecyDTO().fromModel( dbService.save(prophecyDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
 
     @GetMapping("")
-    public ResponseEntity<ResponseList<TestimonyDTO>> search(@RequestParam("searchTerm") String searchTerm,
+    public ResponseEntity<ResponseList<ProphecyDTO>> search(@RequestParam("searchTerm") String searchTerm,
                                                           @RequestParam("offset") int limit,
                                                           @RequestParam("limit") int offset) {
-        Search search= TestimonyServiceImpl.composeSearchObject(searchTerm);
+        Search search= ProphecyServiceImpl.composeSearchObject(searchTerm);
         long recordCount= dbService.count(search);
-        List<TestimonyDTO> records= dbService.getList(search,offset,limit).stream().map(r->new TestimonyDTO().fromModel(r)).collect(Collectors.toList());
+        List<ProphecyDTO> records= dbService.getList(search,offset,limit).stream().map(r->new ProphecyDTO().fromModel(r)).collect(Collectors.toList());
         return ResponseEntity.ok().body(new ResponseList<>(records,recordCount,offset,limit));
 
     }

@@ -1,6 +1,7 @@
 package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
+import com.waci.erp.dtos.PrayerRequestDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.PrayerRequest;
 import com.waci.erp.models.Testimony;
@@ -13,14 +14,14 @@ import java.util.List;
 public interface PrayerRequestService {
     /**
      * Saves a microservice to the database
-     * @param testimony
+     * @param prayerRequestDTO
      * @return
      */
-    PrayerRequest save(PrayerRequest testimony);
+    PrayerRequest save(PrayerRequestDTO prayerRequestDTO);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
-     * @param searchTerm
+     * @param search
      * @param offset
      * @param limit
      * @return
@@ -41,4 +42,5 @@ public interface PrayerRequestService {
      */
     List<PrayerRequest> getByMember(Member member);
 
+    int count(Search search);
 }

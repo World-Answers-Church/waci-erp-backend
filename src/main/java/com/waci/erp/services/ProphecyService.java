@@ -1,6 +1,7 @@
 package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
+import com.waci.erp.dtos.ProphecyDTO;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.PrayerRequest;
 import com.waci.erp.models.Prophecy;
@@ -14,14 +15,16 @@ import java.util.List;
 public interface ProphecyService {
     /**
      * Saves a microservice to the database
-     * @param testimony
+     * @param dto
      * @return
      */
-    Prophecy save(Prophecy testimony);
+    Prophecy save(ProphecyDTO dto);
+
+    int count(Search search);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
-     * @param searchTerm
+     * @param search
      * @param offset
      * @param limit
      * @return

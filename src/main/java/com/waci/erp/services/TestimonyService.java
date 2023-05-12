@@ -25,6 +25,8 @@ public interface TestimonyService {
      */
     List<Testimony> getList(Search search, int offset, int limit);
 
+    int count(Search search);
+
     /**
      * Gets a microservice that matches a given Id
      * @param id

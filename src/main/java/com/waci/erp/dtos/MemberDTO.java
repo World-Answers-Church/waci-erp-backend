@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 
 @Data
 public class MemberDTO extends BaseDTO {
+    private String fullName;
     private String firstName;
     private String lastName;
     private String salutationName;
@@ -25,6 +26,7 @@ public class MemberDTO extends BaseDTO {
     public static MemberDTO fromModel(Member model){
         MemberDTO dto= new MemberDTO();
         dto.setFirstName(model.getFirstName());
+        dto.setFullName(model.getFullName());
         dto.setLastName(model.getLastName());
         dto.setEmailAddress(model.getEmailAddress());
         dto.setImageUrl(model.getImageUrl());

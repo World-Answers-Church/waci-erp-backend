@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 
@@ -39,6 +40,15 @@ public class Member extends BaseEntity {
     private String nin;
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Transient
+    public String getFullName(){
+        if(StringUtils.isNotBlank(this.middleName)) {
+            return this.firstName + " " + this.lastName;
+        }else {
+            return this.firstName + " "+this.middleName+" " + this.lastName;
+        }
+    }
 
 
 }

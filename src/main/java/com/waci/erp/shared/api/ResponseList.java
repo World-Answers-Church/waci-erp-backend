@@ -12,7 +12,6 @@ public class ResponseList<T> extends BaseResponse {
 	private int offset;
 	private int limit;
 	private List<T> records;
-	private List<T> data;
 
 	public ResponseList(List<T> records, long totalItems, int offset, int limit) {
 		this.totalItems = totalItems;

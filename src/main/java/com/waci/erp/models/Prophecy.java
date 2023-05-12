@@ -30,6 +30,9 @@ public class Prophecy extends BaseEntity {
     @Temporal(TemporalType.DATE)
     @Column(name = "date_fulfilled")
     private Date dateFulfilled;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_given")
+    private Date dateGiven;
     @Column(name = "fulfillment_notes")
     private String fulfillmentNotes;
 

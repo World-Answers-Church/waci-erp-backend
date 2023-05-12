@@ -49,7 +49,6 @@ public class LookupServiceImpl implements LookupValueService {
     }
     public LookupValue getLookupValueByTypeAndValue(LookupType lookupType, int  id){
         return lookupValueDao.searchUnique(new Search().addFilterEqual("type",lookupType)
-
                 .addFilterEqual("id",id));
 
     }
