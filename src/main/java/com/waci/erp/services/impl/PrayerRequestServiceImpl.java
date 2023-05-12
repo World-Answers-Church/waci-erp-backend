@@ -3,10 +3,7 @@ package com.waci.erp.services.impl;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.PrayerRequestDao;
 import com.waci.erp.dtos.PrayerRequestDTO;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Member;
-import com.waci.erp.models.PrayerRequest;
+import com.waci.erp.models.*;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.PrayerRequestService;
@@ -35,9 +32,11 @@ public class PrayerRequestServiceImpl implements PrayerRequestService {
     public PrayerRequest save(PrayerRequestDTO dto) {
         PrayerRequest prayerRequest = new PrayerRequest();
         if (dto.getId() > 0) {
-            prayerRequest = getById(dto.getId());
-            if (prayerRequest == null) {
-                throw new OperationFailedException("Prayer Request No Found with Id");
+            PrayerRequest existsWithId =getById(dto.getId());
+            if (existsWithId == null) {
+                throw new OperationFailedException("Prayer Request Not Found with Id");
+            }else{
+                prayerRequest= existsWithId;
             }
         }
         if (dto.getTypeId() == 0) {

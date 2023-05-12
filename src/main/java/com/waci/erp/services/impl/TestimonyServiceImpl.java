@@ -1,11 +1,12 @@
 package com.waci.erp.services.impl;
 
 import com.googlecode.genericdao.search.Search;
-import com.waci.erp.daos.LookupValueDao;
-import com.waci.erp.daos.MemberDao;
 import com.waci.erp.daos.TestimonyDao;
 import com.waci.erp.dtos.TestimonyDTO;
-import com.waci.erp.models.*;
+import com.waci.erp.models.LookupType;
+import com.waci.erp.models.LookupValue;
+import com.waci.erp.models.Member;
+import com.waci.erp.models.Testimony;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.TestimonyService;
@@ -36,9 +37,11 @@ public class TestimonyServiceImpl implements TestimonyService {
     public Testimony save(TestimonyDTO dto) {
         Testimony testimony = new Testimony();
         if (dto.getId() > 0) {
-            testimony = getById(dto.getId());
-            if (testimony == null) {
+            Testimony existsWithId = getById(dto.getId());
+            if (existsWithId == null) {
                 throw new OperationFailedException("Testimony No Found with Id");
+            } else {
+                testimony = existsWithId;
             }
         }
         if (dto.getTypeId() == 0) {
@@ -63,7 +66,7 @@ public class TestimonyServiceImpl implements TestimonyService {
         testimony.setDetails(dto.getDetails());
         testimony.setImageUrl(dto.getImageUrl());
         testimony.setType(type);
-        if(testimony.isNew()) {
+        if (testimony.isNew()) {
             testimony.setMember(member);
         }
         return testimonyDao.save(testimony);
@@ -88,12 +91,13 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     @Override
     public List<Testimony> getByMember(Member member) {
-        Search search= new Search().addFilterEqual("member",member);
+        Search search = new Search().addFilterEqual("member", member);
 
         return testimonyDao.searchUnique(search);
     }
+
     public static Search composeSearchObject(String searchTerm) {
-        return CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("details","member.firstName","member.lastName"));
+        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("details", "member.firstName", "member.lastName"));
 
     }
 
