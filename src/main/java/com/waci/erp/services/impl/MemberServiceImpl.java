@@ -57,7 +57,7 @@ LookupValueService lookupValueDao;
             throw new OperationFailedException("Invalid salutation value");
         }
 
-        LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION, (int) dto.getOccupationId());
+        LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION_TYPES, (int) dto.getOccupationId());
         if(occupation==null){
             throw new OperationFailedException("Invalid occupation value");
         }

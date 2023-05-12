@@ -3,7 +3,10 @@ package com.waci.erp.services.impl;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.ProphecyDao;
 import com.waci.erp.dtos.ProphecyDTO;
-import com.waci.erp.models.*;
+import com.waci.erp.models.LookupType;
+import com.waci.erp.models.LookupValue;
+import com.waci.erp.models.Member;
+import com.waci.erp.models.Prophecy;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.ProphecyService;
@@ -33,10 +36,12 @@ public class ProphecyServiceImpl implements ProphecyService {
 
         Prophecy prophecy = new Prophecy();
         if (dto.getId() > 0) {
-            prophecy = getById(dto.getId());
-            if (prophecy == null) {
+            Prophecy existsWithId = getById(dto.getId());
+            if (existsWithId == null) {
                 throw new OperationFailedException("Prayer Request No Found with Id");
             }
+            prophecy = existsWithId;
+
         }
         if (dto.getTypeId() == 0) {
             throw new OperationFailedException("Missing type");
@@ -61,15 +66,17 @@ public class ProphecyServiceImpl implements ProphecyService {
         prophecy.setImageUrl(dto.getImageUrl());
         prophecy.setType(type);
 
-        if(prophecy.isNew()) {
+        if (prophecy.isNew()) {
             prophecy.setMember(member);
         }
         return prophecyDao.save(prophecy);
     }
+
     @Override
     public int count(Search search) {
         return prophecyDao.count(search);
     }
+
     @Override
     public List<Prophecy> getList(Search search, int offset, int limit) {
         search.setFirstResult(offset);
@@ -80,7 +87,7 @@ public class ProphecyServiceImpl implements ProphecyService {
 
     @Override
     public Prophecy getById(long id) {
-        return prophecyDao.findById(id).orElseThrow(()->new OperationFailedException("Not found"));
+        return prophecyDao.findById(id).orElseThrow(() -> new OperationFailedException("Not found"));
     }
 
     @Override
@@ -89,7 +96,7 @@ public class ProphecyServiceImpl implements ProphecyService {
     }
 
     public static Search composeSearchObject(String searchTerm) {
-        return CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("details","member.firstName","member.lastName"));
+        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("details", "member.firstName", "member.lastName"));
 
     }
 }

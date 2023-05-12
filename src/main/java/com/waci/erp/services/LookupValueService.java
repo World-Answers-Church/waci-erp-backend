@@ -6,6 +6,7 @@ import com.waci.erp.models.LookupType;
 import com.waci.erp.models.LookupValue;
 import com.waci.erp.models.Member;
 import com.waci.erp.models.Testimony;
+import com.waci.erp.shared.models.Country;
 
 import java.util.List;
 
@@ -53,4 +54,11 @@ public interface LookupValueService {
 
     LookupValue getLookupValueByTypeAndValue(LookupType lookupType, int  id);
 
+    Country save(Country country);
+
+    List<Country> getCountries(Search search, int offset, int limit);
+
+    long countCountries(Search search);
+
+    long countLookupValues(Search search);
 }
