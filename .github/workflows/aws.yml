@@ -31,7 +31,7 @@ on:
     branches: [ "master" ]
 
 env:
-  AWS_REGION: ap-northeast-1                   # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: public.ecr.aws/b2n0n1f9/waci-erp-backend           # set this to your Amazon ECR repository name
   ECS_SERVICE: WaciErpService                 # set this to your Amazon ECS service name
   ECS_CLUSTER: ErpDevCluster                 # set this to your Amazon ECS cluster name
