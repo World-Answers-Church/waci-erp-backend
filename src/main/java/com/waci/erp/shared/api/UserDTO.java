@@ -23,12 +23,6 @@ public class UserDTO extends BaseDTO {
     public String countryName;
     public long countryId;
     public boolean isSuperAdmin;
-    public boolean isShopOwner;
-    public long shopOwnerId;
-    public boolean isShopAttendant;
-    public long shopAttendantId;
-    public long attendantShopId;
-    public String attendantShopName;
     public List<PermissionConstant> permissions;
 
 
