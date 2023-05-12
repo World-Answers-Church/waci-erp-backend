@@ -33,7 +33,7 @@ public class MemberController {
      * @param memberDTO
      * @return
      */
-    @PostMapping("/save")
+    @PostMapping("")
     public ResponseEntity<MemberDTO> saveMember(@RequestBody MemberDTO memberDTO) {
         MemberDTO responseDTO = MemberDTO.fromModel( memberService.saveMember(memberDTO));
         return ResponseEntity.ok().body(responseDTO);
@@ -41,7 +41,7 @@ public class MemberController {
 
 
     //Build get members
-    @GetMapping("/get")
+    @GetMapping("")
     public ResponseEntity<ResponseList<MemberDTO>> getMembers(@RequestParam("searchTerm") String searchTerm,
                                                            @RequestParam("offset") int limit,
                                                            @RequestParam("limit") int offset) {
