@@ -5,11 +5,9 @@ import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.daos.TestimonyDao;
 import com.waci.erp.dtos.TestimonyDTO;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Member;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.models.*;
 import com.waci.erp.services.LookupValueService;
+import com.waci.erp.services.MemberService;
 import com.waci.erp.services.TestimonyService;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import com.waci.erp.shared.utils.CustomSearchUtils;
@@ -28,45 +26,47 @@ public class TestimonyServiceImpl implements TestimonyService {
     TestimonyDao testimonyDao;
 
     @Autowired
-    MemberDao memberDao;
+    MemberService memberService;
 
     @Autowired
     LookupValueService lookupValueService;
 
 
     @Override
-    public Testimony save(TestimonyDTO instance) {
-
-        if (instance.getType() == null) {
+    public Testimony save(TestimonyDTO dto) {
+        Testimony testimony = new Testimony();
+        if (dto.getId() > 0) {
+            testimony = getById(dto.getId());
+            if (testimony == null) {
+                throw new OperationFailedException("Testimony No Found with Id");
+            }
+        }
+        if (dto.getTypeId() == 0) {
             throw new OperationFailedException("Missing type");
         }
 
-        if (instance.getMemberId() == 0) {
-            throw new OperationFailedException("Missing member");
+        LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, (int) dto.getTypeId());
+        if (type != null) {
+            throw new OperationFailedException("Invalid Testimony type");
         }
-
-        if (StringUtils.isBlank(instance.getDetails())) {
+        if (StringUtils.isBlank(dto.getDetails())) {
             throw new OperationFailedException("Missing details");
         }
 
-        if (StringUtils.isBlank(instance.getTypeName())) {
-            throw new OperationFailedException("Missing type name");
+        if (dto.getMemberId() == 0) {
+            throw new OperationFailedException("Missing member");
         }
-
-        Member member = memberDao.getReference(instance.getMemberId());
+        Member member = memberService.getMemberById(dto.getMemberId());
         if (member == null) {
-            throw new OperationFailedException("Member with Id not found");
+            throw new OperationFailedException("Missing member");
         }
-
-        LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, instance.getTypeName());
-        if (type == null) {
-            throw new OperationFailedException("Type Not Found");
-        }
-
-        Testimony testimony = instance.toDBObject();
-        testimony.setMember(member);
+        testimony.setDetails(dto.getDetails());
+        testimony.setImageUrl(dto.getImageUrl());
         testimony.setType(type);
-        return testimonyDao.save(instance.toDBObject());
+        if(testimony.isNew()) {
+            testimony.setMember(member);
+        }
+        return testimonyDao.save(testimony);
     }
 
     @Override
@@ -74,6 +74,11 @@ public class TestimonyServiceImpl implements TestimonyService {
         search.setMaxResults(limit);
         search.setFirstResult(offset);
         return testimonyDao.search(search);
+    }
+
+    @Override
+    public int count(Search search) {
+        return testimonyDao.count(search);
     }
 
     @Override
@@ -88,9 +93,8 @@ public class TestimonyServiceImpl implements TestimonyService {
         return testimonyDao.searchUnique(search);
     }
     public static Search composeSearchObject(String searchTerm) {
-        Search search = CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("name","description"));
+        return CustomSearchUtils.generateSearchTerms(searchTerm,   Arrays.asList("details","member.firstName","member.lastName"));
 
-        return  search;
     }
 
 }

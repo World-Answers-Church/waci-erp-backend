@@ -1,15 +1,12 @@
 package com.waci.erp.shared.constants;
 
 public enum PermissionConstant {
-    ADD_USERS(1,"Create/Update Users",PermissionModule.USERS),
-    ADD_ROLE(2,"Create/Update Roles",PermissionModule.USERS),
-    ADD_SHOP_MANAGER(3,"Create/Update Shop Managers",PermissionModule.SHOP_MANAGERS),
-    ADD_SHOP(4,"Create/Update Any Shop",PermissionModule.SHOPS),
-
-    MANAGE_MY_SHOP(5,"Create/Update My Shop Details",PermissionModule.SHOPS),
-    MANAGE_MY_SHOP_ATTENDANTS(6,"Create/Update My Shop Attendants",PermissionModule.SHOPS),
-    MANAGE_MY_SHOP_STOCK(7,"Create/Update My Shop Details",PermissionModule.SHOPS),
-    REGISTER_SHOP_SALES(8,"Register Shop Sales",PermissionModule.SHOPS),
+    CREATE_USERS(1,"Create/Update Users",PermissionModule.USERS),
+    CREATE_ROLE(2,"Create/Update Roles",PermissionModule.USERS),
+    CREATE_MEMBERS(3,"Create/Update Church Members",PermissionModule.MEMBERS),
+    CREATE_PRAYER_REQUESTS(4,"Create/Update Prayer Requests",PermissionModule.PRAYER_REQUESTS),
+    CREATE_PROPHECIES(5,"Create/Update Prophecies",PermissionModule.PRAYER_REQUESTS),
+    CREATE_TESTIMONIES(6,"Create/Update Testimonies",PermissionModule.TESTIMONIES),
 
 
     ;

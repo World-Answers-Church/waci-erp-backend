@@ -1,11 +1,12 @@
 package com.waci.erp.shared.constants;
 
 public enum PermissionModule {
-    LOOKUPS("Lookups"),
+    LOOKUPS("Lookup values"),
     USERS("System Users"),
-    SHOP_MANAGERS("Shop Managers"),
-    SHOPS("Shops"),
-    TRANSACTIONS("Transactions");
+    MEMBERS("Church Members"),
+    PRAYER_REQUESTS("Prayer Requests"),
+    TESTIMONIES("Testimonies"),
+    PROPHECIES("Prophecies");
 
     private String displayName;
 
