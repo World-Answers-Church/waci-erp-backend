@@ -2,9 +2,9 @@ package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PrayerRequestDTO;
-import com.waci.erp.models.Member;
-import com.waci.erp.models.PrayerRequest;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.models.prayers.Member;
+import com.waci.erp.models.prayers.PrayerRequest;
+import com.waci.erp.models.prayers.Testimony;
 
 import java.util.List;
 

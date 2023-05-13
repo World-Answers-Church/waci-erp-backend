@@ -3,10 +3,10 @@ package com.waci.erp.services.impl;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.ProphecyDao;
 import com.waci.erp.dtos.ProphecyDTO;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Member;
-import com.waci.erp.models.Prophecy;
+import com.waci.erp.models.prayers.LookupType;
+import com.waci.erp.models.prayers.LookupValue;
+import com.waci.erp.models.prayers.Member;
+import com.waci.erp.models.prayers.Prophecy;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.ProphecyService;
@@ -47,7 +47,7 @@ public class ProphecyServiceImpl implements ProphecyService {
             throw new OperationFailedException("Missing type");
         }
 
-        LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, (int) dto.getTypeId());
+        LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.PROPHECY_TYPES, (int) dto.getTypeId());
         if (type != null) {
             throw new OperationFailedException("Invalid prayer request type");
         }

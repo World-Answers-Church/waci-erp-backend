@@ -1,14 +1,11 @@
 package com.waci.erp.controllers;
 
 import com.googlecode.genericdao.search.Search;
-import com.waci.erp.dtos.BaseCriteria;
 import com.waci.erp.dtos.TestimonyDTO;
-import com.waci.erp.models.Testimony;
 import com.waci.erp.services.TestimonyService;
 import com.waci.erp.services.impl.TestimonyServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,8 @@
 package com.waci.erp.dtos;
 
-import com.waci.erp.models.Member;
-import com.waci.erp.models.Salutation;
+import com.waci.erp.models.prayers.Member;
 import com.waci.erp.shared.api.BaseDTO;
 import lombok.Data;
-import org.modelmapper.ModelMapper;
 
 @Data
 public class MemberDTO extends BaseDTO {

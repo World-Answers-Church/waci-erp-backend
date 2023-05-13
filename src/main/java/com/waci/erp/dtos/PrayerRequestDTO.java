@@ -1,7 +1,6 @@
 package com.waci.erp.dtos;
 
-import com.waci.erp.models.PrayerRequest;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.models.prayers.PrayerRequest;
 import com.waci.erp.shared.api.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

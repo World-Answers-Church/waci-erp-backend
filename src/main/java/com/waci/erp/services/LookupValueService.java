@@ -2,10 +2,8 @@ package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.LookupValueDTO;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Member;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.models.prayers.LookupType;
+import com.waci.erp.models.prayers.LookupValue;
 import com.waci.erp.shared.models.Country;
 
 import java.util.List;
