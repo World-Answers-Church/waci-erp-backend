@@ -16,8 +16,11 @@ public class Country extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name = "code", length = 10, nullable = false)
+    @Column(name = "code", length = 10, nullable = true)
     private String code;
+    @Column(name = "postal_code", length = 10, nullable = true)
+    private String postalCode;
+
     @Column(name = "currency_code",length = 10,  nullable = true, unique = true)
     private String currencyCode;
     @Column(name = "currency_symbol",length = 5,  nullable = true, unique = true)
@@ -27,6 +30,7 @@ public class Country extends BaseEntity implements Serializable {
     public Country(String name, String postalCode, String currencyCode, String currencySymbol) {
         this.name = name;
         this.code = postalCode;
+        this.postalCode=postalCode;
         this.currencyCode = currencyCode;
         this.currencySymbol = currencySymbol;
     }
@@ -34,6 +38,7 @@ public class Country extends BaseEntity implements Serializable {
     public Country(String name, String postalCode) {
         this.name = name;
         this.code = postalCode;
+        this.postalCode=postalCode;
     }
 
     @Override
