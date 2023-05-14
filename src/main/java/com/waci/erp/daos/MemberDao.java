@@ -1,6 +1,6 @@
 package com.waci.erp.daos;
 
-import com.waci.erp.models.Member;
+import com.waci.erp.models.prayers.Member;
 import com.waci.erp.shared.dao.BaseDao;
 
 /**

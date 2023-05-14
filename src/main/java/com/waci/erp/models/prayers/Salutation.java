@@ -1,4 +1,4 @@
-package com.waci.erp.models;
+package com.waci.erp.models.prayers;
 
 public enum Salutation {
     MR,

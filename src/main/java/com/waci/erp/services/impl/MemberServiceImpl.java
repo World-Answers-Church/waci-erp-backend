@@ -1,12 +1,11 @@
 package com.waci.erp.services.impl;
 
 import com.googlecode.genericdao.search.Search;
-import com.waci.erp.daos.LookupValueDao;
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.dtos.MemberDTO;
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Member;
+import com.waci.erp.models.prayers.LookupType;
+import com.waci.erp.models.prayers.LookupValue;
+import com.waci.erp.models.prayers.Member;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.shared.exceptions.OperationFailedException;

@@ -1,43 +1,46 @@
 package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
-import com.waci.erp.dtos.MemberDTO;
+import com.waci.erp.dtos.PledgePaymentDTO;
+import com.waci.erp.models.finance.PledgePayment;
 import com.waci.erp.models.prayers.Member;
 
 import java.util.List;
 
 /**
- * Handles CRUD operations on the {@link  Member}
+ * Handles CRUD operations on the {@link  PledgePayment}
  */
-public interface MemberService {
+public interface PledgePaymentService {
     /**
      * Saves a microservice to the database
-     * @param microservice
+     * @param dto
      * @return
      */
-    Member saveMember(MemberDTO memberDTO);
+    PledgePayment save(PledgePaymentDTO dto);
+
+    int count(Search search);
 
     /**
      * Gets a list of microservices following a supplied search term, offset and limit
      * @param search
+     * @param offset
+     * @param limit
      * @return
      */
-    List<Member> getMembers(Search search,int offset, int limit);
-
-   int countMembers(Search search);
+    List<PledgePayment> getList(Search search, int offset, int limit);
 
     /**
      * Gets a microservice that matches a given Id
      * @param id
      * @return
      */
-    Member getMemberById(long id);
+    PledgePayment getById(long id);
 
     /**
      * Gets a microservice that matches a given code
-     * @param phoneNumber
+     * @param member
      * @return
      */
-    Member getMemberByPhoneNumber(String phoneNumber);
+    List<PledgePayment> getByMember(Member member);
 
 }

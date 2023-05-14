@@ -1,14 +1,12 @@
 package com.waci.erp.dtos;
 
-import com.waci.erp.models.LookupType;
-import com.waci.erp.models.LookupValue;
-import com.waci.erp.models.Testimony;
+import com.waci.erp.models.prayers.LookupType;
+import com.waci.erp.models.prayers.LookupValue;
 import com.waci.erp.shared.api.BaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor

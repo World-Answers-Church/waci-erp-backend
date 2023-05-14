@@ -1,11 +1,12 @@
-package com.waci.erp.models;
+package com.waci.erp.models.prayers;
 
 public enum LookupType {
     PRAYER_REQUEST_TYPE(1,"Prayer Request Types"),
     TESTIMONY_TYPE(2,"Testimony Types"),
     SALUTATION(3,"Salutations"),
     PROPHECY_TYPES(4,"Prophecy Types"),
-    OCCUPATION_TYPES(5,"Occupation Types");
+    OCCUPATION_TYPES(5,"Occupation Types"),
+    FUNDRAISING_CAUSE_CATEGORIES(6,"Fundraising Categories");;
 
     private int id;
     private String uiName;

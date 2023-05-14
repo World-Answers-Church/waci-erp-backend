@@ -1,4 +1,4 @@
-package com.waci.erp.models;
+package com.waci.erp.models.prayers;
 
 import com.waci.erp.shared.models.BaseEntity;
 import lombok.AllArgsConstructor;

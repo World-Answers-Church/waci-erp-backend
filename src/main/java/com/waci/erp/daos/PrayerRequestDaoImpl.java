@@ -1,7 +1,7 @@
 package com.waci.erp.daos;
 
-import com.waci.erp.models.Member;
-import com.waci.erp.models.PrayerRequest;
+import com.waci.erp.models.prayers.Member;
+import com.waci.erp.models.prayers.PrayerRequest;
 import com.waci.erp.shared.dao.BaseDAOImpl;
 import org.springframework.stereotype.Repository;
 
