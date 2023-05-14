@@ -29,7 +29,6 @@ public class PledgePayment extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_paid")
     private LocalDateTime datePaid;
 

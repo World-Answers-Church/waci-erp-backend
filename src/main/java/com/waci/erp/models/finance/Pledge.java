@@ -32,18 +32,18 @@ public class Pledge extends BaseEntity {
     @Column(name = "status")
     private PledgeStatus status;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    
     @Column(name = "date_pledged")
     private LocalDateTime datePledged;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    
     @Column(name = "date_cleared")
     private LocalDateTime dateCleared;
 
     @Column(name = "cancellation_reason")
     private String cancellationReason;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    
     @Column(name = "date_cancelled")
     private LocalDateTime dateCancelled;
 }
