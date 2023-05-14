@@ -97,7 +97,7 @@ public class LookupServiceImpl implements LookupValueService {
             throw new OperationFailedException("Missing name");
         }
 
-        if(StringUtils.isBlank(country.getPostalCode())){
+        if(StringUtils.isBlank(country.getCode())){
             throw new OperationFailedException("Missing code");
         }
 
@@ -135,7 +135,7 @@ public class LookupServiceImpl implements LookupValueService {
     public static Search composeSearchObjectForCountry(String searchTerm) {
         com.googlecode.genericdao.search.Search search = CustomSearchUtils.generateSearchTerms(searchTerm,
                 Arrays.asList("name",
-                        "postalCode",
+                        "code",
                         "currencyCode"));
         search.addSortDesc("id");
 

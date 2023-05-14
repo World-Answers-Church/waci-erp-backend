@@ -58,6 +58,7 @@ public class TokenProvider {
             if (userAccount == null) {
                 throw new JWTVerificationException("Invalid Credentials in Token");
             }
+            UserDetailsContext.setLoggedInUser(userAccount);
             return userAccount;
         }catch (Exception exception){
             throw new JWTVerificationException(exception.getMessage());

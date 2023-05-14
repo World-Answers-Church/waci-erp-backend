@@ -5,6 +5,7 @@ import com.googlecode.genericdao.search.MetadataUtil;
 import com.googlecode.genericdao.search.jpa.JPASearchProcessor;
 import com.waci.erp.shared.models.BaseEntity;
 import com.waci.erp.shared.models.User;
+import com.waci.erp.shared.security.UserDetailsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,12 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         return super.save(entity);
     }
 
+    @Override
+    public T save(T entity) {
+        entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
+        return super.save(entity);
+    }
+
     @Transactional
     @Override
     public T saveAndFlush(T entity, User loggedInUser) {
@@ -61,6 +68,12 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
     @Override
     public T merge(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
+        return super.merge(entity);
+    }
+
+    @Override
+    public T merge(T entity) {
+        entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
         return super.merge(entity);
     }
 
