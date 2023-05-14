@@ -47,7 +47,10 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
 
     @Override
     public T save(T entity) {
-        entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
+        User user=UserDetailsContext.getLoggedInUser();
+        if(user!=null) {
+            entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
+        }
         return super.save(entity);
     }
 

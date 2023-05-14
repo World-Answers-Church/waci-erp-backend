@@ -45,13 +45,13 @@ public class WaciErpApplication {
 				lookupValueService.save(new LookupValueDTO(LookupType.TESTIMONY_TYPE,"Fullfilled Prophecy"));
 
 			} catch (Exception ex) {
-
+				ex.printStackTrace();
 			}
 
 			try {
 				Role super_admin_role = userService.saveRole(new Role(SecurityConstants.SUPER_ADMIN_ROLE, "Super admin role"));
 			} catch (Exception ex) {
-
+				ex.printStackTrace();
 			}
 
 			try {
@@ -61,7 +61,7 @@ public class WaciErpApplication {
 				user.setLastName("Administrator");
 				userService.saveUser(user);
 			} catch (Exception ex) {
-
+ex.printStackTrace();
 			}
 
 			try {

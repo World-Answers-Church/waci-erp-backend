@@ -109,7 +109,7 @@ public class LookupServiceImpl implements LookupValueService {
         return countryDao.save(country);
     }
     Country getByName(String name){
-        return lookupValueDao.searchUnique(
+        return countryDao.searchUnique(
                 new Search().addFilterEqual("name",name) );
     };
     @Override
