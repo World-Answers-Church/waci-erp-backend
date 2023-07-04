@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LookupValueDTO extends BaseDTO {
 private long id;
-    private LookupType type;
     private String typeName;
     private int typeId;
     private String value;
@@ -22,7 +21,8 @@ private long id;
     private String imageUrl;
 
     public LookupValueDTO(LookupType type, String value) {
-        this.type = type;
+        this.typeId = type.getId();
+        this.typeName = type.getUiName();
         this.value = value;
     }
 

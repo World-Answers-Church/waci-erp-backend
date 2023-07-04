@@ -90,7 +90,7 @@ public class TokenProvider {
     }
 
     /**
-     * Creates a new access token from the supplied reftesh token
+     * Creates a new access token from the supplied refresh token
      * @param refreshToken
      * @return
      */
