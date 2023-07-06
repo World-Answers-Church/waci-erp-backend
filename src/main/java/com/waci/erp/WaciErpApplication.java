@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Employees API", version = "2.0", description = "Employees Information"))
+@OpenAPIDefinition(info = @Info(title = "WACI ERP API", version = "2.0", description = "WACI ERP Api Doc"))
 public class WaciErpApplication {
 
 	public static void main(String[] args) {
@@ -45,13 +45,13 @@ public class WaciErpApplication {
 				lookupValueService.save(new LookupValueDTO(LookupType.TESTIMONY_TYPE,"Fullfilled Prophecy"));
 
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				Logger.getAnonymousLogger().info("Lookups creation status: "+ex.getMessage());
 			}
 
 			try {
-				Role super_admin_role = userService.saveRole(new Role(SecurityConstants.SUPER_ADMIN_ROLE, "Super admin role"));
+				 userService.saveRole(new Role(SecurityConstants.SUPER_ADMIN_ROLE, "Super admin role"));
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				Logger.getAnonymousLogger().info("Admin Role creation status: "+ex.getMessage());
 			}
 
 			try {
@@ -61,7 +61,7 @@ public class WaciErpApplication {
 				user.setLastName("Administrator");
 				userService.saveUser(user);
 			} catch (Exception ex) {
-ex.printStackTrace();
+Logger.getAnonymousLogger().info("Admin creation status: "+ex.getMessage());
 			}
 
 			try {
@@ -73,7 +73,7 @@ ex.printStackTrace();
 					}
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				Logger.getAnonymousLogger().info("Country creation status: "+ex.getMessage());
 			}
 
 		};

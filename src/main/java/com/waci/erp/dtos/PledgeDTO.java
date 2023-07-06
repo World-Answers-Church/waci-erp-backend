@@ -22,6 +22,8 @@ public class PledgeDTO extends BaseDTO {
     private float amountPaid;
     private String memberName;
     private long memberId;
+    private String fundraisingCauseName;
+    private long fundraisingCauseId;
     private String statusName;
     private long statusId;
     private LocalDateTime datePledged;
@@ -38,6 +40,8 @@ public class PledgeDTO extends BaseDTO {
         this.setCancellationReason(model.getCancellationReason());
         this.setMemberId(model.getMember().getId());
         this.setMemberName(model.getMember().getFullName());
+        this.setFundraisingCauseId(model.getFundraisingCause().getId());
+        this.setFundraisingCauseName(model.getFundraisingCause().getName());
 
         this.setId(model.getId());
         this.setRecordStatus(model.getRecordStatus().name());

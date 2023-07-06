@@ -28,6 +28,10 @@ public class Pledge extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "fundraising_cause")
+    private FundraisingCause fundraisingCause;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private PledgeStatus status;

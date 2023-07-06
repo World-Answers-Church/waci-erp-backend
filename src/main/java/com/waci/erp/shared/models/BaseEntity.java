@@ -15,7 +15,7 @@ public class BaseEntity implements Auditable {
 
     @Id
     @GeneratedValue
-    protected Long id;
+    public Long id;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "record_status", nullable = false)
