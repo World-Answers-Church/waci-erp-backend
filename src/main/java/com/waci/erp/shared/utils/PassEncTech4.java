@@ -21,7 +21,7 @@ public class PassEncTech4
       
     /* Method to generate the salt value. */  
     public static String getSaltvalue()
-    {  
+    {
 
         return System.getenv(EnvironmentConstants.ENC_SALT_SECRET);
     }     
