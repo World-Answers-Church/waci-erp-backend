@@ -37,10 +37,10 @@ public class MemberController {
     //Build get members
     @GetMapping("")
     public ResponseEntity<ResponseList<MemberDTO>> getMembers(@RequestParam(value = "searchTerm", required = false) String searchTerm,
-                                                              @RequestParam(value = "offset", required = true) int limit,
-                                                              @RequestParam(value = "limit", required = true) int offset) {
+                                                              @RequestParam(value = "offset", required = true) int offset,
+                                                              @RequestParam(value = "limit", required = true) int limit) {
         Search search = MemberServiceImpl.composeSearchObject(searchTerm);
-        List<MemberDTO> members = memberService.getMembers(search, offset, limit).stream().map(r -> MemberDTO.fromModel(r)).collect(Collectors.toList());
+        List<MemberDTO> members = memberService.getMembers(search, offset, limit).stream().map(MemberDTO::fromModel).collect(Collectors.toList());
         int totalRecords = memberService.countMembers(search);
         return ResponseEntity.ok().body(new ResponseList<>(members, totalRecords, offset, limit));
 
