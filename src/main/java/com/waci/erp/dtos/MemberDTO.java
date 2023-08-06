@@ -11,6 +11,8 @@ public class MemberDTO extends BaseDTO {
     private String lastName;
     private String salutationName;
     private long salutationId;
+    private String genderName;
+    private long genderId;
     private String middleName;
     private String physicalAddress;
     private String phoneNumber;
@@ -28,14 +30,25 @@ public class MemberDTO extends BaseDTO {
         dto.setLastName(model.getLastName());
         dto.setEmailAddress(model.getEmailAddress());
         dto.setImageUrl(model.getImageUrl());
+        dto.setYearJoined(model.getYearJoined());
         dto.setNin(model.getNin());
-        dto.setOccupationName(model.getOccupation().getValue());
-        dto.setPhoneNumber(model.getPhoneNumber());
-        dto.setEmailAddress(model.getEmailAddress());
-        dto.setOccupationId(model.getOccupation().getId());
-        dto.setSalutationId(model.getSalutation().getId());
-        dto.setSalutationName(model.getSalutation().getValue());
 
+        dto.setPhoneNumber(model.getPhoneNumber());
+        dto.setPhysicalAddress(model.getPhysicalAddress());
+        dto.setEmailAddress(model.getEmailAddress());
+
+        if(model.getOccupation()!=null) {
+            dto.setOccupationId(model.getOccupation().getId());
+            dto.setOccupationName(model.getOccupation().getValue());
+        }
+        if(model.getSalutation()!=null) {
+            dto.setSalutationId(model.getSalutation().getId());
+            dto.setSalutationName(model.getSalutation().getValue());
+        }
+        if(model.getGender()!=null) {
+            dto.setGenderId(model.getGender().getId());
+            dto.setGenderName(model.getGender().getUiName());
+        }
 
         dto.setId(model.getId());
         dto.setRecordStatus(model.getRecordStatus().name());

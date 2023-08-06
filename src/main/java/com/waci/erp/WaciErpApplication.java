@@ -51,6 +51,8 @@ public class WaciErpApplication {
 
             try {
                 userService.saveRole(new Role(SecurityConstants.SUPER_ADMIN_ROLE, "Super admin role"));
+                userService.saveRole(new Role(SecurityConstants.NORMAL_SYSTEM_USER, "Normal User Role"));
+
             } catch (Exception ex) {
                 Logger.getAnonymousLogger().info("Admin Role creation status: " + ex.getMessage());
             }

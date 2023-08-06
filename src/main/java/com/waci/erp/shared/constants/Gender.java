@@ -7,10 +7,8 @@ import java.util.Arrays;
  * @author RayGdhrt
  */
 public enum Gender {
-    MALE(1,"Male"),
-    FEMALE(2,"Female"),
-    RATHER_NOT_SAY(3,"Rather not say"),
-    OTHER(4,"Other");
+    MALE(0,"Male"),
+    FEMALE(1,"Female");
 
     private String uiName;
     private int id;
@@ -35,4 +33,6 @@ public enum Gender {
     public static Gender fromId(int id){
         return Arrays.stream(Gender.values()).filter(gender -> gender.id == id).findFirst().orElse(null);
     }
+
+
 }

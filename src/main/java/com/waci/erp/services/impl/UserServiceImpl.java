@@ -149,12 +149,12 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Missing/Invalid Gender Id");
         }
         user.setGender(gender);
-
-        for (long roleId : dto.roleIds) {
-            Role role = roleRepository.getReference(roleId);
-            user.addRole(role);
-        }
-
+      if(  dto.roleIds!=null) {
+          for (long roleId : dto.roleIds) {
+              Role role = roleRepository.getReference(roleId);
+              user.addRole(role);
+          }
+      }
         return userRepository.save(user);
     }
 

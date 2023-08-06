@@ -8,6 +8,7 @@ import com.waci.erp.models.prayers.LookupValue;
 import com.waci.erp.models.prayers.Member;
 import com.waci.erp.services.LookupValueService;
 import com.waci.erp.services.MemberService;
+import com.waci.erp.shared.constants.Gender;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import com.waci.erp.shared.utils.CustomSearchUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,14 +52,15 @@ LookupValueService lookupValueDao;
             throw new OperationFailedException("Member with same phone number exists");
         }
 
-        LookupValue salutation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.TESTIMONY_TYPE, (int) dto.getSalutationId());
-        if(salutation==null){
-            throw new OperationFailedException("Invalid salutation value");
-        }
+        LookupValue salutation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.SALUTATION, (int) dto.getSalutationId());
+
 
         LookupValue occupation= lookupValueDao.getLookupValueByTypeAndValue(LookupType.OCCUPATION_TYPES, (int) dto.getOccupationId());
-        if(occupation==null){
-            throw new OperationFailedException("Invalid occupation value");
+
+
+        Gender gender= Gender.fromId((int) dto.getGenderId());
+        if(gender==null){
+            throw new OperationFailedException("Invalid gender");
         }
 
 
@@ -69,6 +71,7 @@ LookupValueService lookupValueDao;
         member.setLastName(dto.getLastName());
         member.setOccupation(occupation);
         member.setNin(dto.getNin());
+        member.setGender(gender);
         member.setPhoneNumber(dto.getPhoneNumber());
         member.setPhysicalAddress(dto.getPhysicalAddress());
         member.setSalutation(salutation);
@@ -109,8 +112,7 @@ LookupValueService lookupValueDao;
                         "physicalAddress",
                         "phoneNumber",
                         "emailAddress",
-                        "nin",
-                        "occupation"));
+                        "nin"));
 
         return  search;
     }
