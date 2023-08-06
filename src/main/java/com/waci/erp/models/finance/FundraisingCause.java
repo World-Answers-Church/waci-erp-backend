@@ -2,6 +2,7 @@ package com.waci.erp.models.finance;
 
 import com.waci.erp.models.prayers.LookupValue;
 import com.waci.erp.models.prayers.Member;
+import com.waci.erp.models.prayers.OrganisationBaseEntity;
 import com.waci.erp.shared.models.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "fundraising_causes")
-public class FundraisingCause extends BaseEntity {
+public class FundraisingCause extends OrganisationBaseEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private LookupValue category;

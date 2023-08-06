@@ -28,15 +28,21 @@ public class FundraisingCauseDTO extends BaseDTO {
 
     public FundraisingCauseDTO fromModel(FundraisingCause model){
         this.setName(model.getName());
-        this.setCategoryId((int) model.getCategory().getId());
-        this.setCategoryName(model.getCategory().getValue());
+        if(model.getCategory()!=null) {
+            this.setCategoryId((int) model.getCategory().getId());
+            this.setCategoryName(model.getCategory().getValue());
+        }
         this.setImageUrl(model.getImageUrl());
-        this.setFundraisingPlanTypeId((int) model.getFundraisingPlanType().ordinal());
-        this.setFundraisingPlanTypeName(model.getFundraisingPlanType().name());
+        if(model.getFundraisingPlanType()!=null) {
+            this.setFundraisingPlanTypeId((int) model.getFundraisingPlanType().getId());
+            this.setFundraisingPlanTypeName(model.getFundraisingPlanType().getUiName());
+        }
         this.setMinimumContribution(model.getMinimumContribution());
         this.setPeriodicContributionAmount(model.getPeriodicContributionAmount());
-        this.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().ordinal());
-        this.setReccuringPaymentFrequencyName(model.getReccuringPaymentFrequency().name());
+        if(model.getReccuringPaymentFrequency()!=null) {
+            this.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().ordinal());
+            this.setReccuringPaymentFrequencyName(model.getReccuringPaymentFrequency().getUiName());
+        }
         this.setImageUrl(model.getImageUrl());
 
         this.setId(model.getId());
