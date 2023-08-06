@@ -47,21 +47,18 @@ public class PledgeServiceImpl implements PledgeService {
         }
 
         Member member = memberService.getMemberById(dto.getMemberId());
-        if (member != null) {
-            throw new OperationFailedException("Invalid Pledge type");
+        if (member == null) {
+            throw new OperationFailedException("Member not found");
         }
 
         FundraisingCause cause = fundraisingCauseService.getById(dto.getFundraisingCauseId());
-        if (cause != null) {
+        if (cause == null) {
             throw new OperationFailedException("Missing Cause");
         }
         if (dto.getAmount()<=0) {
             throw new OperationFailedException("Invalid amount");
         }
 
-        if (dto.getMemberId() == 0) {
-            throw new OperationFailedException("Missing member");
-        }
 
         pledge.setAmount(dto.getAmount());
         pledge.setDatePledged(dto.getDatePledged());

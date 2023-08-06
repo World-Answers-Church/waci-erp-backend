@@ -16,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "members")
-public class Member extends BaseEntity {
+public class Member extends OrganisationBaseEntity {
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")

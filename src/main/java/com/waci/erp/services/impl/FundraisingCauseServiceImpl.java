@@ -5,6 +5,7 @@ import com.waci.erp.daos.FundraisingCauseDao;
 import com.waci.erp.dtos.FundraisingCauseDTO;
 import com.waci.erp.models.finance.FundraisingCause;
 import com.waci.erp.models.finance.FundraisingPlanTypes;
+import com.waci.erp.models.finance.ReccuringPaymentFrequency;
 import com.waci.erp.models.prayers.LookupType;
 import com.waci.erp.models.prayers.LookupValue;
 import com.waci.erp.services.FundraisingCauseService;
@@ -43,14 +44,10 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
             fundraisingCause = existsWithId;
 
         }
-        if (dto.getCategoryId() == 0) {
-            throw new OperationFailedException("Missing category");
-        }
+
 
         LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.FUNDRAISING_CAUSE_CATEGORIES, (int) dto.getCategoryId());
-        if (type != null) {
-            throw new OperationFailedException("Invalid category");
-        }
+
 
         FundraisingPlanTypes fundraisingPlanType = FundraisingPlanTypes.getById(dto.getFundraisingPlanTypeId());
         if (fundraisingPlanType == null) {
@@ -60,10 +57,13 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
         if (StringUtils.isBlank(dto.getName())) {
             throw new OperationFailedException("Missing name");
         }
-        if (StringUtils.isBlank(dto.getDescription())) {
-            throw new OperationFailedException("Missing description");
-        }
-
+     fundraisingCause.setCategory(type);
+        fundraisingCause.setFundraisingPlanType(fundraisingPlanType);
+        fundraisingCause.setMinimumContribution(dto.getMinimumContribution());
+        fundraisingCause.setTargetAmount(dto.getTargetAmount());
+        fundraisingCause.setPeriodicContributionAmount(dto.getPeriodicContributionAmount());
+       // ReccuringPaymentFrequency reccuringPaymentFrequency = ReccuringPaymentFrequency.getById(dto.getFundraisingPlanTypeId());
+      //  fundraisingCause.setReccuringPaymentFrequency(dto.getReccuringPaymentFrequencyId());
         fundraisingCause.setDescription(dto.getDescription());
         fundraisingCause.setImageUrl(dto.getImageUrl());
         fundraisingCause.setName(dto.getName());

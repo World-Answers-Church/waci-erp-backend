@@ -6,7 +6,8 @@ public enum LookupType {
     SALUTATION(3,"Salutations"),
     PROPHECY_TYPES(4,"Prophecy Types"),
     OCCUPATION_TYPES(5,"Occupation Types"),
-    FUNDRAISING_CAUSE_CATEGORIES(6,"Fundraising Categories");;
+    FUNDRAISING_CAUSE_CATEGORIES(6,"Fundraising Categories"),
+    ORGANISATION_CATEGORIES(7,"Organisation Categories");;
 
     private int id;
     private String uiName;
