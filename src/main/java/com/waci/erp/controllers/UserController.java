@@ -78,7 +78,6 @@ public class UserController {
                                                           @RequestParam("limit") int limit) {
 
         Search search = UserServiceImpl.composeSearchObjectForRole(searchTerm);
-
         List<RoleDTO> roles = userService.getAllRoles(search,offset,limit).stream().map(RoleDTO::fromRole).collect(Collectors.toList());
         return ResponseEntity.ok().body(new ResponseList<>(roles,10,offset,limit));
     }
