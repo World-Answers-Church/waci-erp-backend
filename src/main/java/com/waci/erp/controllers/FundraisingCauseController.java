@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class FundraisingCauseController {
 
     @Autowired
-    FundraisingCauseService FundraisingCauseService;
+    FundraisingCauseService fundraisingCauseService;
 
     /**
      * Endpoint to register a microservice
@@ -29,7 +29,7 @@ public class FundraisingCauseController {
      */
     @PostMapping("")
     public ResponseEntity<FundraisingCauseDTO> saveFundraisingCause(@RequestBody FundraisingCauseDTO FundraisingCauseDTO) {
-        FundraisingCauseDTO responseDTO = FundraisingCauseDTO.fromModel(FundraisingCauseService.save(FundraisingCauseDTO));
+        FundraisingCauseDTO responseDTO = FundraisingCauseDTO.fromModel(fundraisingCauseService.save(FundraisingCauseDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -40,9 +40,9 @@ public class FundraisingCauseController {
                                                               @RequestParam(value = "offset", required = true) int offset,
                                                               @RequestParam(value = "limit", required = true) int limit) {
         Search search = FundraisingCauseServiceImpl.composeSearchObject(searchTerm);
-        List<FundraisingCauseDTO> FundraisingCauses = FundraisingCauseService.getList(search, offset, limit).stream().map(new FundraisingCauseDTO()::fromModel).collect(Collectors.toList());
-        int totalRecords = FundraisingCauseService.count(search);
-        return ResponseEntity.ok().body(new ResponseList<>(FundraisingCauses, totalRecords, offset, limit));
+        List<FundraisingCauseDTO> fundraisingCauseDTOS = fundraisingCauseService.getList(search, offset, limit).stream().map(new FundraisingCauseDTO()::fromModel).collect(Collectors.toList());
+        int totalRecords = fundraisingCauseService.count(search);
+        return ResponseEntity.ok().body(new ResponseList<>(fundraisingCauseDTOS, totalRecords, offset, limit));
 
     }
 }

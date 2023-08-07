@@ -40,7 +40,7 @@ public class FundraisingCauseDTO extends BaseDTO {
         this.setMinimumContribution(model.getMinimumContribution());
         this.setPeriodicContributionAmount(model.getPeriodicContributionAmount());
         if(model.getReccuringPaymentFrequency()!=null) {
-            this.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().ordinal());
+            this.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().getId());
             this.setReccuringPaymentFrequencyName(model.getReccuringPaymentFrequency().getUiName());
         }
         this.setImageUrl(model.getImageUrl());
