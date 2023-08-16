@@ -31,26 +31,27 @@ public class PledgeDTO extends BaseDTO {
     private String cancellationReason;
     private LocalDateTime dateCancelled;
 
-    public PledgeDTO fromModel(Pledge model){
-        this.setAmount(model.getAmount());
-        this.setAmountPaid(model.getAmountPaid());
-        this.setDatePledged(model.getDatePledged());
-        this.setDateCleared(model.getDateCleared());
-        this.setDateCancelled(model.getDateCancelled());
-        this.setCancellationReason(model.getCancellationReason());
-        this.setMemberId(model.getMember().getId());
-        this.setMemberName(model.getMember().getFullName());
-        this.setFundraisingCauseId(model.getFundraisingCause().getId());
-        this.setFundraisingCauseName(model.getFundraisingCause().getName());
+    public static PledgeDTO fromModel(Pledge model){
+        PledgeDTO dto= new PledgeDTO();
+        dto.setAmount(model.getAmount());
+        dto.setAmountPaid(model.getAmountPaid());
+        dto.setDatePledged(model.getDatePledged());
+        dto.setDateCleared(model.getDateCleared());
+        dto.setDateCancelled(model.getDateCancelled());
+        dto.setCancellationReason(model.getCancellationReason());
+        dto.setMemberId(model.getMember().getId());
+        dto.setMemberName(model.getMember().getFullName());
+        dto.setFundraisingCauseId(model.getFundraisingCause().getId());
+        dto.setFundraisingCauseName(model.getFundraisingCause().getName());
 
-        this.setId(model.getId());
-        this.setRecordStatus(model.getRecordStatus().name());
-        this.setCreatedById(model.getCreatedById());
-        this.setCreatedByUsername(model.getCreatedByUsername());
-        this.setChangedById(model.getChangedById());
-        this.setChangedByUserName(model.getChangedByUsername());
-        this.setDateCreated(model.getDateCreated());
-        this.setDateChanged(model.getDateChanged());
-        return this;
+        dto.setId(model.getId());
+        dto.setRecordStatus(model.getRecordStatus().name());
+        dto.setCreatedById(model.getCreatedById());
+        dto.setCreatedByUsername(model.getCreatedByUsername());
+        dto.setChangedById(model.getChangedById());
+        dto.setChangedByUserName(model.getChangedByUsername());
+        dto.setDateCreated(model.getDateCreated());
+        dto.setDateChanged(model.getDateChanged());
+        return dto;
     }
 }

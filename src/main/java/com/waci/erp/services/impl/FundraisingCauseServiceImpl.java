@@ -44,26 +44,32 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
             fundraisingCause = existsWithId;
 
         }
-
-
         LookupValue type = lookupValueService.getLookupValueByTypeAndValue(LookupType.FUNDRAISING_CAUSE_CATEGORIES, (int) dto.getCategoryId());
-
-
-        FundraisingPlanTypes fundraisingPlanType = FundraisingPlanTypes.getById(dto.getFundraisingPlanTypeId());
-        if (fundraisingPlanType == null) {
-            throw new OperationFailedException("Invalid Fundraising Plan Type");
-        }
 
         if (StringUtils.isBlank(dto.getName())) {
             throw new OperationFailedException("Missing name");
         }
+        FundraisingPlanTypes fundraisingPlanType = FundraisingPlanTypes.getById(dto.getFundraisingPlanTypeId());
+        if (fundraisingPlanType == null) {
+            throw new OperationFailedException("Invalid Fundraising Plan Type");
+        }
+        ReccuringPaymentFrequency reccuringPaymentFrequency = ReccuringPaymentFrequency.getById(dto.getFundraisingPlanTypeId());
+
+        if (fundraisingPlanType.equals(FundraisingPlanTypes.FIXED_RECURRING)&& reccuringPaymentFrequency == null) {
+            throw new OperationFailedException("Invalid Reccuring Payment Frequency");
+        }
+
+        if (fundraisingPlanType.equals(FundraisingPlanTypes.FIXED_RECURRING)&& dto.getPeriodicContributionAmount() <=0) {
+            throw new OperationFailedException("Invalid Reccuring periodic contribution");
+        }
+
+
      fundraisingCause.setCategory(type);
         fundraisingCause.setFundraisingPlanType(fundraisingPlanType);
         fundraisingCause.setMinimumContribution(dto.getMinimumContribution());
         fundraisingCause.setTargetAmount(dto.getTargetAmount());
         fundraisingCause.setPeriodicContributionAmount(dto.getPeriodicContributionAmount());
-       // ReccuringPaymentFrequency reccuringPaymentFrequency = ReccuringPaymentFrequency.getById(dto.getFundraisingPlanTypeId());
-      //  fundraisingCause.setReccuringPaymentFrequency(dto.getReccuringPaymentFrequencyId());
+        fundraisingCause.setReccuringPaymentFrequency(reccuringPaymentFrequency);
         fundraisingCause.setDescription(dto.getDescription());
         fundraisingCause.setImageUrl(dto.getImageUrl());
         fundraisingCause.setName(dto.getName());
@@ -95,7 +101,7 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
     }
 
     public static Search composeSearchObject(String searchTerm) {
-        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("details", "member.firstName", "member.lastName"));
+        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("name","category.value","description"));
 
     }
 }

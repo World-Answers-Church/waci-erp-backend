@@ -2,6 +2,8 @@ package com.waci.erp.controllers;
 
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PledgeDTO;
+import com.waci.erp.models.finance.FundraisingCause;
+import com.waci.erp.services.FundraisingCauseService;
 import com.waci.erp.services.PledgeService;
 import com.waci.erp.services.impl.PledgeServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
@@ -19,7 +21,10 @@ import java.util.stream.Collectors;
 public class PledgeController {
 
     @Autowired
-    PledgeService PledgeService;
+    PledgeService pledgeService;
+
+    @Autowired
+    FundraisingCauseService fundraisingCauseService;
 
     /**
      * Endpoint to register a microservice
@@ -29,7 +34,7 @@ public class PledgeController {
      */
     @PostMapping("")
     public ResponseEntity<PledgeDTO> savePledge(@RequestBody PledgeDTO PledgeDTO) {
-        PledgeDTO responseDTO = PledgeDTO.fromModel(PledgeService.save(PledgeDTO));
+        PledgeDTO responseDTO = PledgeDTO.fromModel(pledgeService.save(PledgeDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -37,11 +42,18 @@ public class PledgeController {
     //Build get Pledges
     @GetMapping("")
     public ResponseEntity<ResponseList<PledgeDTO>> getPledges(@RequestParam(value = "searchTerm", required = false) String searchTerm,
-                                                              @RequestParam(value = "offset", required = true) int offset,
-                                                              @RequestParam(value = "limit", required = true) int limit) {
+                                                              @RequestParam(value = "programId", required = false) Long programId,
+                                                              @RequestParam(value = "offset", required = true) Integer offset,
+                                                              @RequestParam(value = "limit", required = true) Integer limit) throws Exception {
         Search search = PledgeServiceImpl.composeSearchObject(searchTerm);
-        List<PledgeDTO> Pledges = PledgeService.getList(search, offset, limit).stream().map(new PledgeDTO()::fromModel).collect(Collectors.toList());
-        int totalRecords = PledgeService.count(search);
+        if(programId!=null){
+            FundraisingCause fundraisingCause=fundraisingCauseService.getById(programId);
+            search.addFilterEqual("fundraisingCause",fundraisingCause);
+        }
+
+
+        List<PledgeDTO> Pledges = pledgeService.getList(search, offset, limit).stream().map(PledgeDTO::fromModel).collect(Collectors.toList());
+        int totalRecords = pledgeService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(Pledges, totalRecords, offset, limit));
 
     }

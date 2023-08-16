@@ -5,7 +5,7 @@ import com.waci.erp.models.prayers.LookupType;
 public enum FundraisingPlanTypes {
     OPEN(1,"Open"),
     FIXED_VALUE(2,"Fixed Value"),
-    FIXED_RECURRING(4,"Reccurring and Fixed");
+    FIXED_RECURRING(3,"Reccurring and Fixed");
 
     private int id;
     private String uiName;

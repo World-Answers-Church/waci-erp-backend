@@ -53,7 +53,7 @@ public class PledgeServiceImpl implements PledgeService {
 
         FundraisingCause cause = fundraisingCauseService.getById(dto.getFundraisingCauseId());
         if (cause == null) {
-            throw new OperationFailedException("Missing Cause");
+            throw new OperationFailedException("Missing program");
         }
         if (dto.getAmount()<=0) {
             throw new OperationFailedException("Invalid amount");
