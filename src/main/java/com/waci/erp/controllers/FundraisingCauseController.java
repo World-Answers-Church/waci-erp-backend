@@ -24,12 +24,12 @@ public class FundraisingCauseController {
     /**
      * Endpoint to register a microservice
      *
-     * @param FundraisingCauseDTO
+     * @param fundraisingCauseDTO
      * @return
      */
     @PostMapping("")
-    public ResponseEntity<FundraisingCauseDTO> saveFundraisingCause(@RequestBody FundraisingCauseDTO FundraisingCauseDTO) {
-        FundraisingCauseDTO responseDTO = FundraisingCauseDTO.fromModel(fundraisingCauseService.save(FundraisingCauseDTO));
+    public ResponseEntity<FundraisingCauseDTO> saveFundraisingCause(@RequestBody FundraisingCauseDTO fundraisingCauseDTO) {
+        FundraisingCauseDTO responseDTO = fundraisingCauseDTO.fromModel(fundraisingCauseService.save(fundraisingCauseDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -40,7 +40,7 @@ public class FundraisingCauseController {
                                                               @RequestParam(value = "offset", required = true) int offset,
                                                               @RequestParam(value = "limit", required = true) int limit) {
         Search search = FundraisingCauseServiceImpl.composeSearchObject(searchTerm);
-        List<FundraisingCauseDTO> fundraisingCauseDTOS = fundraisingCauseService.getList(search, offset, limit).stream().map(new FundraisingCauseDTO()::fromModel).collect(Collectors.toList());
+        List<FundraisingCauseDTO> fundraisingCauseDTOS = fundraisingCauseService.getList(search, offset, limit).stream().map(FundraisingCauseDTO::fromModel).collect(Collectors.toList());
         int totalRecords = fundraisingCauseService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(fundraisingCauseDTOS, totalRecords, offset, limit));
 

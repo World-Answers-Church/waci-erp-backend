@@ -101,7 +101,7 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
     }
 
     public static Search composeSearchObject(String searchTerm) {
-        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("name","category.value","description", "member.firstName", "member.lastName"));
+        return CustomSearchUtils.generateSearchTerms(searchTerm, Arrays.asList("name","category.value","description"));
 
     }
 }

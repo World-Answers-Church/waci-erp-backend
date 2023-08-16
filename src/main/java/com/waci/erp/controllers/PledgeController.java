@@ -52,7 +52,7 @@ public class PledgeController {
         }
 
 
-        List<PledgeDTO> Pledges = pledgeService.getList(search, offset, limit).stream().map(new PledgeDTO()::fromModel).collect(Collectors.toList());
+        List<PledgeDTO> Pledges = pledgeService.getList(search, offset, limit).stream().map(PledgeDTO::fromModel).collect(Collectors.toList());
         int totalRecords = pledgeService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(Pledges, totalRecords, offset, limit));
 

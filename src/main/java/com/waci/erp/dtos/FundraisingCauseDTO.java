@@ -26,33 +26,34 @@ public class FundraisingCauseDTO extends BaseDTO {
     private String reccuringPaymentFrequencyName;
     private int reccuringPaymentFrequencyId;
 
-    public FundraisingCauseDTO fromModel(FundraisingCause model){
-        this.setName(model.getName());
+    public static FundraisingCauseDTO fromModel(FundraisingCause model){
+        FundraisingCauseDTO dto=    new FundraisingCauseDTO();
+        dto.setName(model.getName());
         if(model.getCategory()!=null) {
-            this.setCategoryId((int) model.getCategory().getId());
-            this.setCategoryName(model.getCategory().getValue());
+            dto.setCategoryId((int) model.getCategory().getId());
+            dto.setCategoryName(model.getCategory().getValue());
         }
-        this.setImageUrl(model.getImageUrl());
+        dto.setImageUrl(model.getImageUrl());
         if(model.getFundraisingPlanType()!=null) {
-            this.setFundraisingPlanTypeId((int) model.getFundraisingPlanType().getId());
-            this.setFundraisingPlanTypeName(model.getFundraisingPlanType().getUiName());
+            dto.setFundraisingPlanTypeId((int) model.getFundraisingPlanType().getId());
+            dto.setFundraisingPlanTypeName(model.getFundraisingPlanType().getUiName());
         }
-        this.setMinimumContribution(model.getMinimumContribution());
-        this.setPeriodicContributionAmount(model.getPeriodicContributionAmount());
+        dto.setMinimumContribution(model.getMinimumContribution());
+        dto.setPeriodicContributionAmount(model.getPeriodicContributionAmount());
         if(model.getReccuringPaymentFrequency()!=null) {
-            this.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().getId());
-            this.setReccuringPaymentFrequencyName(model.getReccuringPaymentFrequency().getUiName());
+            dto.setReccuringPaymentFrequencyId(model.getReccuringPaymentFrequency().getId());
+            dto.setReccuringPaymentFrequencyName(model.getReccuringPaymentFrequency().getUiName());
         }
-        this.setImageUrl(model.getImageUrl());
+        dto.setImageUrl(model.getImageUrl());
 
-        this.setId(model.getId());
-        this.setRecordStatus(model.getRecordStatus().name());
-        this.setCreatedById(model.getCreatedById());
-        this.setCreatedByUsername(model.getCreatedByUsername());
-        this.setChangedById(model.getChangedById());
-        this.setChangedByUserName(model.getChangedByUsername());
-        this.setDateCreated(model.getDateCreated());
-        this.setDateChanged(model.getDateChanged());
-        return this;
+        dto.setId(model.getId());
+        dto.setRecordStatus(model.getRecordStatus().name());
+        dto.setCreatedById(model.getCreatedById());
+        dto.setCreatedByUsername(model.getCreatedByUsername());
+        dto.setChangedById(model.getChangedById());
+        dto.setChangedByUserName(model.getChangedByUsername());
+        dto.setDateCreated(model.getDateCreated());
+        dto.setDateChanged(model.getDateChanged());
+        return dto;
     }
 }
