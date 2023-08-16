@@ -41,6 +41,8 @@ public class PledgeDTO extends BaseDTO {
         dto.setCancellationReason(model.getCancellationReason());
         dto.setMemberId(model.getMember().getId());
         dto.setMemberName(model.getMember().getFullName());
+        dto.setStatusId(model.getStatus().getId());
+        dto.setStatusName(model.getStatus().name());
         dto.setFundraisingCauseId(model.getFundraisingCause().getId());
         dto.setFundraisingCauseName(model.getFundraisingCause().getName());
 

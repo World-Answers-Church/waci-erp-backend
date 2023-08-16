@@ -29,7 +29,7 @@ public class PledgePaymentController {
      */
     @PostMapping("")
     public ResponseEntity<PledgePaymentDTO> savePledgePayment(@RequestBody PledgePaymentDTO pledgePaymentDTO) {
-        PledgePaymentDTO responseDTO = new PledgePaymentDTO().fromModel(pledgePaymentService.save(pledgePaymentDTO));
+        PledgePaymentDTO responseDTO =  PledgePaymentDTO.fromModel(pledgePaymentService.save(pledgePaymentDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -40,7 +40,7 @@ public class PledgePaymentController {
                                                               @RequestParam(value = "offset", required = true) int offset,
                                                               @RequestParam(value = "limit", required = true) int limit) {
         Search search = PledgePaymentServiceImpl.composeSearchObject(searchTerm);
-        List<PledgePaymentDTO> pledgePayments = pledgePaymentService.getList(search, offset, limit).stream().map(new PledgePaymentDTO()::fromModel).collect(Collectors.toList());
+        List<PledgePaymentDTO> pledgePayments = pledgePaymentService.getList(search, offset, limit).stream().map(PledgePaymentDTO::fromModel).collect(Collectors.toList());
         int totalRecords = pledgePaymentService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(pledgePayments, totalRecords, offset, limit));
 

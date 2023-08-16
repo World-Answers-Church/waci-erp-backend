@@ -5,6 +5,7 @@ import com.waci.erp.daos.MemberDao;
 import com.waci.erp.daos.PledgeDao;
 import com.waci.erp.daos.PledgePaymentDao;
 import com.waci.erp.dtos.PledgePaymentDTO;
+import com.waci.erp.models.finance.FundraisingCause;
 import com.waci.erp.models.finance.Pledge;
 import com.waci.erp.models.finance.PledgePayment;
 import com.waci.erp.models.prayers.Member;
@@ -45,9 +46,6 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
             throw new OperationFailedException("Missing PledgeId");
         }
 
-        if (dto.getMemberId() == 0) {
-            throw new OperationFailedException("Missing member id");
-        }
 
         if (dto.getDatePaid() == null) {
             throw new OperationFailedException("Missing date");
@@ -56,11 +54,9 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
         if (dto.getAmount() <= 0) {
             throw new OperationFailedException("Invalid payment amount");
         }
-        Member member = memberDao.findById(dto.getMemberId()).orElseThrow(() -> new ValidationFailedException("Member not found"));
-        Pledge pledge = pledgeDao.findById(dto.getPledgeId()).orElseThrow(() -> new ValidationFailedException("Pledge not found"));
+       Pledge pledge = pledgeDao.findById(dto.getPledgeId()).orElseThrow(() -> new ValidationFailedException("Pledge not found"));
 
         pledgePayment.setId(dto.getId());
-        pledgePayment.setMember(member);
         pledgePayment.setPledge(pledge);
         pledgePayment.setAmount(dto.getAmount());
         pledgePayment.setDatePaid(dto.getDatePaid());
@@ -90,16 +86,15 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
         return pledgePaymentDao.search(new Search().addFilterEqual("member", member));
     }
 
+
+
     public static Search composeSearchObject(String searchTerm) {
         Search search = CustomSearchUtils.generateSearchTerms(searchTerm,
                 Arrays.asList(
-                        "firstName",
-                        "lastName",
-                        "middleName",
-                        "physicalAddress",
-                        "phoneNumber",
-                        "emailAddress",
-                        "nin"));
+                        "pledge.member.firstName",
+                        "pledge.member.lastName",
+                        "pledge.fundraisingCause.name",
+                        "pledge.member.phoneNumber"));
 
         return search;
     }
