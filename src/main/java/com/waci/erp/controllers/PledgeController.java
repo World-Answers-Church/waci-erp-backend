@@ -3,7 +3,10 @@ package com.waci.erp.controllers;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PledgeDTO;
 import com.waci.erp.models.finance.FundraisingCause;
+import com.waci.erp.models.finance.PledgeStatus;
+import com.waci.erp.models.prayers.Member;
 import com.waci.erp.services.FundraisingCauseService;
+import com.waci.erp.services.MemberService;
 import com.waci.erp.services.PledgeService;
 import com.waci.erp.services.impl.PledgeServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
@@ -26,15 +29,18 @@ public class PledgeController {
     @Autowired
     FundraisingCauseService fundraisingCauseService;
 
+    @Autowired
+    MemberService    memberService;
+
     /**
      * Endpoint to register a microservice
      *
-     * @param PledgeDTO
+     * @param pledgeDTO
      * @return
      */
     @PostMapping("")
-    public ResponseEntity<PledgeDTO> savePledge(@RequestBody PledgeDTO PledgeDTO) {
-        PledgeDTO responseDTO = PledgeDTO.fromModel(pledgeService.save(PledgeDTO));
+    public ResponseEntity<PledgeDTO> savePledge(@RequestBody PledgeDTO pledgeDTO) {
+        PledgeDTO responseDTO = PledgeDTO.fromModel(pledgeService.save(pledgeDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
 
@@ -43,12 +49,24 @@ public class PledgeController {
     @GetMapping("")
     public ResponseEntity<ResponseList<PledgeDTO>> getPledges(@RequestParam(value = "searchTerm", required = false) String searchTerm,
                                                               @RequestParam(value = "programId", required = false) Long programId,
+                                                              @RequestParam(value = "memberId", required = false) Long memberId,
+                                                              @RequestParam(value = "statusId", required = false) Long statusId,
                                                               @RequestParam(value = "offset", required = true) Integer offset,
                                                               @RequestParam(value = "limit", required = true) Integer limit) throws Exception {
         Search search = PledgeServiceImpl.composeSearchObject(searchTerm);
         if(programId!=null){
             FundraisingCause fundraisingCause=fundraisingCauseService.getById(programId);
             search.addFilterEqual("fundraisingCause",fundraisingCause);
+        }
+        if(memberId!=null){
+            Member member=memberService.getMemberById(memberId);
+
+            search.addFilterEqual("member",member);
+        }
+
+        if(statusId!=null){
+            PledgeStatus pledgeStatus=PledgeStatus.getById(statusId);
+            search.addFilterEqual("status",pledgeStatus);
         }
 
 

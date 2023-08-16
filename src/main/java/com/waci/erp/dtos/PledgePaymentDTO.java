@@ -20,24 +20,29 @@ public class PledgePaymentDTO extends BaseDTO {
     private long memberId;
     private String pledgeName;
     private long pledgeId;
+    private String programName;
+    private long programId;
     private LocalDateTime datePaid;
 
-    public PledgePaymentDTO fromModel(PledgePayment model){
-        this.setAmount(model.getAmount());
-        this.setPledgeId(model.getPledge().getId());
-        this.setPledgeName(model.getPledge().getMember().getFullName());
-        this.setDatePaid(model.getDatePaid());
-        this.setMemberId(model.getMember().getId());
-        this.setMemberName(model.getMember().getFullName());
+    public static PledgePaymentDTO fromModel(PledgePayment model){
+        PledgePaymentDTO dto= new PledgePaymentDTO();
+        dto.setAmount(model.getAmount());
+        dto.setPledgeId(model.getPledge().getId());
+        dto.setPledgeName(model.getPledge().getMember().getFullName());
+        dto.setDatePaid(model.getDatePaid());
+        dto.setMemberId(model.getPledge().getMember().getId());
+        dto.setMemberName(model.getPledge().getMember().getFullName());
+        dto.setProgramId(model.getPledge().getFundraisingCause().getId());
+        dto.setProgramName(model.getPledge().getFundraisingCause().getName());
 
-        this.setId(model.getId());
-        this.setRecordStatus(model.getRecordStatus().name());
-        this.setCreatedById(model.getCreatedById());
-        this.setCreatedByUsername(model.getCreatedByUsername());
-        this.setChangedById(model.getChangedById());
-        this.setChangedByUserName(model.getChangedByUsername());
-        this.setDateCreated(model.getDateCreated());
-        this.setDateChanged(model.getDateChanged());
-        return this;
+        dto.setId(model.getId());
+        dto.setRecordStatus(model.getRecordStatus().name());
+        dto.setCreatedById(model.getCreatedById());
+        dto.setCreatedByUsername(model.getCreatedByUsername());
+        dto.setChangedById(model.getChangedById());
+        dto.setChangedByUserName(model.getChangedByUsername());
+        dto.setDateCreated(model.getDateCreated());
+        dto.setDateChanged(model.getDateChanged());
+        return dto;
     }
 }

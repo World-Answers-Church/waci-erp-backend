@@ -5,6 +5,8 @@ import com.waci.erp.daos.PledgeDao;
 import com.waci.erp.dtos.PledgeDTO;
 import com.waci.erp.models.finance.FundraisingCause;
 import com.waci.erp.models.finance.Pledge;
+import com.waci.erp.models.finance.PledgePayment;
+import com.waci.erp.models.finance.PledgeStatus;
 import com.waci.erp.models.prayers.Member;
 import com.waci.erp.services.FundraisingCauseService;
 import com.waci.erp.services.MemberService;
@@ -55,10 +57,14 @@ public class PledgeServiceImpl implements PledgeService {
         if (cause == null) {
             throw new OperationFailedException("Missing program");
         }
-        if (dto.getAmount()<=0) {
+        if (dto.getAmount() <= 0) {
             throw new OperationFailedException("Invalid amount");
         }
+        Pledge existingPledge = getInstance(member, cause);
+        if (existingPledge != null && existingPledge.getId() != dto.getId()) {
+            throw new OperationFailedException("Member already has an active pledge on this program");
 
+        }
 
         pledge.setAmount(dto.getAmount());
         pledge.setDatePledged(dto.getDatePledged());
@@ -95,6 +101,15 @@ public class PledgeServiceImpl implements PledgeService {
         Search search = new Search().addFilterEqual("member", member);
 
         return pledgeDao.searchUnique(search);
+    }
+
+    public Pledge getInstance(Member member, FundraisingCause fundraisingCause) {
+        return pledgeDao.searchUnique(
+                new Search().addFilterEqual("member", member)
+                        .addFilterEqual("fundraisingCause", fundraisingCause)
+                        .addFilterEqual("status", PledgeStatus.OPEN)
+                        .setMaxResults(1)
+        );
     }
 
     public static Search composeSearchObject(String searchTerm) {

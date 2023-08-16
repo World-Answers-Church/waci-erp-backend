@@ -26,9 +26,7 @@ public class PledgePayment extends OrganisationBaseEntity {
     @JoinColumn(name = "pledge_id")
     private Pledge pledge;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+
 
     @Column(name = "date_paid")
     private LocalDateTime datePaid;

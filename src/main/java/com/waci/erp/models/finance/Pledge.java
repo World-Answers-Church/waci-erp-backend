@@ -35,7 +35,7 @@ public class Pledge extends OrganisationBaseEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    private PledgeStatus status;
+    private PledgeStatus status=PledgeStatus.OPEN;
 
     
     @Column(name = "date_pledged")
