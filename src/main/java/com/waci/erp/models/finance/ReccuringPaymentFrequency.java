@@ -1,10 +1,10 @@
 package com.waci.erp.models.finance;
 
 public enum ReccuringPaymentFrequency {
-    WEEKLY(1,"WEEKLY"),
-    BI_WEEKLY(2,"BI_WEEKLY"),
-    MONTHLY(3,"MONTHLY"),
-    YEARLY(4,"YEARLY"),;
+    WEEKLY(1,"Weekly"),
+    BI_WEEKLY(2,"Bi-Weekly"),
+    MONTHLY(3,"Monthly"),
+    YEARLY(4,"Yearly"),;
     private int id;
     private String uiName;
     ReccuringPaymentFrequency(int id,String name){

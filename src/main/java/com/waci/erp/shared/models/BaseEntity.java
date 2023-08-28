@@ -40,6 +40,9 @@ public class BaseEntity implements Auditable {
     @Column(name = "custom_prop_one")
     private String customPropOne;
 
+    @Column(name = "organisation_code")
+    private String organisationCode;
+
     public BaseEntity() {
         this.id = Long.valueOf(0);
         this.recordStatus = RecordStatus.ACTIVE;
@@ -64,6 +67,7 @@ public class BaseEntity implements Auditable {
             this.setCreatedByUsername(loggedInUser.getFullName());
             this.setDateCreated(LocalDateTime.now());
         }
+        this.setOrganisationCode(loggedInUser.getOrganisationCode());
         this.setChangedById(loggedInUser.getId());
         this.setChangedByUsername(loggedInUser.getFullName());
         this.setDateChanged(LocalDateTime.now());
@@ -105,7 +109,13 @@ public class BaseEntity implements Auditable {
         return createdByUsername;
     }
 
+    public String getOrganisationCode() {
+        return organisationCode;
+    }
 
+    public void setOrganisationCode(String organisationCode) {
+        this.organisationCode = organisationCode;
+    }
 
     public void setCreatedByUsername(String createdByUsername) {
         this.createdByUsername = createdByUsername;

@@ -2,6 +2,7 @@ package com.waci.erp.shared.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.waci.erp.shared.models.BaseEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class BaseDTO {
+public class  BaseDTO {
 	private long id;
 	private String status;
 	private String message;
@@ -20,4 +21,6 @@ public class BaseDTO {
 	private LocalDateTime dateCreated;
 	private LocalDateTime dateChanged;
 	private String recordStatus;
+
+
 }

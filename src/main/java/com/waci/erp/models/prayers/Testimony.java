@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "testimonies")
-public class Testimony extends OrganisationBaseEntity {
+public class Testimony extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "type_id")

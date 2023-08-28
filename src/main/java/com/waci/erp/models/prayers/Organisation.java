@@ -17,10 +17,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "organisations")
 public class Organisation extends BaseEntity {
-    @Column(name = "first_name")
+    @Column(name = "name")
     private String name;
-    @Column(name = "last_name")
+    @Column(name = "email_address")
     private String emailAddress;
+    @Column(name = "code")
+    private String code;
     @ManyToOne
     @JoinColumn(name = "category")
     private LookupValue category;
@@ -34,6 +36,10 @@ public class Organisation extends BaseEntity {
     private String otherPhoneNumber;
     @Column(name = "logo_url")
     private String logoUrl;
+
+    @OneToOne
+    @JoinColumn(name = "settings_id")
+    private OrganisationSetting settings;
 
 
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class OrganisationDTO extends BaseDTO {
     private String name;
+    private String code;
     private String emailAddress;
     private String categoryName;
     private long categoryId;
@@ -21,6 +22,7 @@ public class OrganisationDTO extends BaseDTO {
         dto.setPrimaryPhoneNumber(model.getPrimaryPhoneNumber());
         dto.setOtherPhoneNumber(model.getOtherPhoneNumber());
         dto.setEmailAddress(model.getEmailAddress());
+        dto.setCode(model.getCode());
 
         dto.setLogoUrl(model.getLogoUrl());
         dto.setPhysicalAddress(model.getPhysicalAddress());

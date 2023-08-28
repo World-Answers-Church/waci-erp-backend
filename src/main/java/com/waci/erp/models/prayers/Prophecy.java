@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "prophecies")
-public class Prophecy extends OrganisationBaseEntity {
+public class Prophecy extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "prophecy_type_id")
