@@ -96,7 +96,7 @@ public class OrganisationServiceImpl implements OrganisationService {
         user.setLastName("Admin");
         user.setUsername(organisation.getCode());
         user.setPassword(organisation.getPrimaryPhoneNumber());
-
+        user.setOrganisationCode(organisation.getOrganisationCode());
         userService.saveUser(user);
     }
 
@@ -162,7 +162,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     public Organisation getOrganisationByPhoneNumber(String phoneNumber) {
-        return organisationDao.searchUnique(new Search().addFilterEqual("phoneNumber", phoneNumber));
+        return organisationDao.searchUnique(new Search().addFilterEqual("primaryPhoneNumber", phoneNumber));
     }
 
     public Organisation getOrganisationByCode(String code) {

@@ -44,6 +44,7 @@ public class PledgePaymentDTO extends BaseDTO {
         dto.setChangedByUserName(model.getChangedByUsername());
         dto.setDateCreated(model.getDateCreated());
         dto.setDateChanged(model.getDateChanged());
+        dto.setOrganisationCode(model.getOrganisationCode());
         return dto;
     }
 }

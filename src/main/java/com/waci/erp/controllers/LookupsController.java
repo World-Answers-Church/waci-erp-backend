@@ -66,8 +66,8 @@ public class LookupsController {
     @GetMapping("/lookup-values")
     public ResponseEntity<ResponseList<LookupValueDTO>> getLookupValues(@RequestParam(name = "searchTerm", required = false) String searchTerm,
                                                                         @RequestParam(name = "lookupTypeId", required = false) Long lookupTypeId,
-                                                                        @RequestParam(name = "offset", required = false) int limit,
-                                                                        @RequestParam(name = "limit",required = false) int offset) {
+                                                                        @RequestParam(name = "offset", required = false) int offset,
+                                                                        @RequestParam(name = "limit",required = false) int limit) {
         Search search = LookupServiceImpl.composeSearchObjectForLookupValue(searchTerm);
 
 
@@ -77,7 +77,7 @@ public class LookupsController {
                 search.addFilterEqual("type", lookupType);
             }
         }
-        List<LookupValueDTO> members = lookupService.getList(search, offset, limit).stream().map(r -> new LookupValueDTO().fromModel(r)).collect(Collectors.toList());
+        List<LookupValueDTO> members = lookupService.getList(search, offset, limit).stream().map(LookupValueDTO::fromModel).collect(Collectors.toList());
         int totalRecords = (int) lookupService.countLookupValues(search);
         return ResponseEntity.ok().body(new ResponseList<>(members, totalRecords, offset, limit));
     }

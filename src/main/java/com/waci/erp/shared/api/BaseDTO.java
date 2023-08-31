@@ -21,6 +21,7 @@ public class  BaseDTO {
 	private LocalDateTime dateCreated;
 	private LocalDateTime dateChanged;
 	private String recordStatus;
+	private String organisationCode;
 
 
 }

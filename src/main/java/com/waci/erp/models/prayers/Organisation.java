@@ -37,7 +37,7 @@ public class Organisation extends BaseEntity {
     @Column(name = "logo_url")
     private String logoUrl;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "settings_id")
     private OrganisationSetting settings;
 

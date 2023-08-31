@@ -4,6 +4,7 @@ package com.waci.erp.shared.utils;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.shared.constants.RecordStatus;
+import com.waci.erp.shared.security.UserDetailsContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class CustomSearchUtils {
         Search search = new Search();
         search.addFilterEqual("recordStatus", RecordStatus.ACTIVE);
         search.addSortDesc("id");
+
+        if(UserDetailsContext.getLoggedInOrganisation()!=null){
+            search.addFilterEqual("organisationCode",UserDetailsContext.getLoggedInOrganisation().getCode());
+        }
 
         if (StringUtils.isNotBlank(query) && searchTermSatisfiesQueryCriteria(query)) {
             ArrayList<Filter> filters = new ArrayList<Filter>();

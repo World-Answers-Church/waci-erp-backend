@@ -18,7 +18,8 @@ public class FilterUtils {
                     "/swagger-ui",
                     "/api-docs",
                     "/api/v1/auth/refresh/token",
-                    "/api/v1/auth/login"
+                    "/api/v1/auth/login",
+                    "/api/v1/lookups"
             )
     );
 
