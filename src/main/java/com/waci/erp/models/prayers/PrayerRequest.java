@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "prayer_requests")
-public class PrayerRequest extends OrganisationBaseEntity {
+public class PrayerRequest extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "type_id")

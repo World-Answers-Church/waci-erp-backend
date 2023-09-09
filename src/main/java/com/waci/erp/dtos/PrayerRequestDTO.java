@@ -35,6 +35,7 @@ public class PrayerRequestDTO extends BaseDTO {
         this.setChangedByUserName(model.getChangedByUsername());
         this.setDateCreated(model.getDateCreated());
         this.setDateChanged(model.getDateChanged());
+        this.setOrganisationCode(model.getOrganisationCode());
         return this;
     }
 }

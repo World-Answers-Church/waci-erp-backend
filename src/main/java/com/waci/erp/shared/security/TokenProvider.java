@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.waci.erp.models.prayers.Organisation;
+import com.waci.erp.services.OrganisationService;
 import com.waci.erp.services.UserService;
 import com.waci.erp.shared.api.UserDTO;
 import com.waci.erp.shared.models.User;
@@ -23,9 +25,10 @@ import java.util.Date;
 @Component
 public class TokenProvider {
     private Algorithm algorithm;
-    private String TOKEN_CIPHER = "JABUYA_TOKEN_CIPHER";
-    private String TOKEN_ISSURER = "jabuyasystems.com";
-    private static  final String PERMISSIONS_KEY="permissions";
+    private String TOKEN_CIPHER = "RAYCORP_TOKEN_CIPHER";
+    private String TOKEN_ISSURER = "raycorp.com";
+    private static final String PERMISSIONS_KEY = "permissions";
+    private static final String ORGANISATION_CODE_KEY = "organisation-code";
     private static long ACCESS_TOKEN_DURATION = 1 * 86400000l;// 1 days;
     private static long REFRESH_TOKEN_DURATION = 90 * 86400000l;// 90 days;
     private static long REMEMBER_ME_ACCESS_TOKEN_DURATION = 7 * 86400000l;// 7 days;
@@ -33,10 +36,14 @@ public class TokenProvider {
     @Autowired
     UserService userService;
 
+    @Autowired
+    OrganisationService organisationService;
+
+
     public TokenProvider() {
         String secretKey = System.getProperty(TOKEN_CIPHER);
-        if(StringUtils.isBlank(secretKey)){
-            secretKey=TOKEN_CIPHER;
+        if (StringUtils.isBlank(secretKey)) {
+            secretKey = TOKEN_CIPHER;
         }
         this.algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
@@ -58,15 +65,26 @@ public class TokenProvider {
             if (userAccount == null) {
                 throw new JWTVerificationException("Invalid Credentials in Token");
             }
+            UserDetailsContext.clear();
             UserDetailsContext.setLoggedInUser(userAccount);
+            if (!userAccount.hasAdministrativePrivileges()) {
+                String organisationCode = decodedJWT.getClaim(ORGANISATION_CODE_KEY).asString();
+                Organisation organisation = organisationService.getOrganisationByCode(organisationCode);
+                if (organisation == null) {
+                    throw new JWTVerificationException("Invalid Organisation");
+                }
+                UserDetailsContext.setLoggedInOrganisation(organisation);
+            }
+
             return userAccount;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             throw new JWTVerificationException(exception.getMessage());
         }
     }
 
     /**
      * Creates a new JWT token
+     *
      * @param user
      * @param rememberMe
      * @return
@@ -77,32 +95,36 @@ public class TokenProvider {
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(dateNow.getTime() + (rememberMe ? REMEMBER_ME_ACCESS_TOKEN_DURATION : ACCESS_TOKEN_DURATION)))
                 .withIssuer(TOKEN_ISSURER)
-                .withClaim(PERMISSIONS_KEY, user.getPermissions()!=null?new ArrayList<>(user.getPermissions()):null)
+                .withClaim(PERMISSIONS_KEY, user.getPermissions() != null ? new ArrayList<>(user.getPermissions()) : null)
+                .withClaim(ORGANISATION_CODE_KEY, user.getOrganisationCode())
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(dateNow.getTime() + REFRESH_TOKEN_DURATION))
                 .withIssuer(TOKEN_ISSURER)
-                .withClaim(PERMISSIONS_KEY,user.getPermissions()!=null? new ArrayList<>(user.getPermissions()):null)
+                .withClaim(ORGANISATION_CODE_KEY, user.getOrganisationCode())
+                .withClaim(PERMISSIONS_KEY, user.getPermissions() != null ? new ArrayList<>(user.getPermissions()) : null)
                 .sign(algorithm);
         return new TokenPair(accessToken, refreshToken);
     }
 
     /**
      * Creates a new access token from the supplied refresh token
+     *
      * @param refreshToken
      * @return
      */
-    public TokenPair refreshAccessToken(String refreshToken)throws JWTVerificationException {
+    public TokenPair refreshAccessToken(String refreshToken) throws JWTVerificationException {
         User userAccount = validateToken(refreshToken);
-        if(userAccount==null){
+        if (userAccount == null) {
             throw new JWTVerificationException("Invalid user details in token");
         }
         String accessToken = JWT.create()
                 .withSubject(userAccount.getEmailAddress())
                 .withExpiresAt(new Date(new Date().getTime() + ACCESS_TOKEN_DURATION))
                 .withIssuer(TOKEN_ISSURER)
+                .withClaim(ORGANISATION_CODE_KEY, userAccount.getOrganisationCode())
                 .withClaim(PERMISSIONS_KEY, new ArrayList<>(userAccount.findPermissions()))
                 .sign(algorithm);
 

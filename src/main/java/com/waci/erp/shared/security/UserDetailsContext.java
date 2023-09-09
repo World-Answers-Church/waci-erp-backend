@@ -1,5 +1,6 @@
 package com.waci.erp.shared.security;
 
+import com.waci.erp.models.prayers.Organisation;
 import com.waci.erp.shared.models.User;
 
 /**
@@ -15,6 +16,15 @@ public class UserDetailsContext {
     }
 
     private static ThreadLocal<User> bearerToken = new InheritableThreadLocal<>();
+    private static ThreadLocal<Organisation> organisation = new InheritableThreadLocal<>();
+
+    public static Organisation getLoggedInOrganisation() {
+        return organisation.get();
+    }
+
+    public static void setLoggedInOrganisation(Organisation id) {
+        organisation.set(id);
+    }
 
     public static User getLoggedInUser() {
         return bearerToken.get();
@@ -24,7 +34,9 @@ public class UserDetailsContext {
         bearerToken.set(id);
     }
 
+
     public static void clear() {
         bearerToken.remove();
+        organisation.remove();
     }
 }

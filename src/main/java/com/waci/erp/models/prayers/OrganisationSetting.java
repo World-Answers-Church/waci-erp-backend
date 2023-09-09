@@ -13,30 +13,37 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "organisation_ui_settings")
-public class OrganisationUISetting extends OrganisationBaseEntity {
+@Table(name = "organisation_settings")
+public class OrganisationSetting extends BaseEntity {
 
 
     //Ui Settings
-
     @Column(name = "theme_color")
-    private String themeColor;
+    private String themeColor="#2f8ee5";
+
+    @Column(name = "color_mode")
+    private String colorMode="light";
     @Column(name = "menuMode")
-    private String menuMode;
+    private String menuMode="static";
     @Column(name = "inline_menu_position")
-    private String InlineMenuPosition;
+    private String InlineMenuPosition="bottom";
     @Column(name = "input_background")
     private String inputBackground;
+    @Column(name = "input_style")
+    private String inputStyle="filled";
     @Column(name = "rtl")
-    private boolean rtl;
+    private boolean rtl=true;
     @Column(name = "menu_theme")
-    private String menuTheme;
+    private String menuTheme="light";
     @Column(name = "topbar_theme")
-    private String topbarTheme;
+    private String topbarTheme="blue";
     @Column(name = "component_theme")
-    private String componentTheme;
+    private String componentTheme="indigo";
     @Column(name = "theme_scale")
-    private int themeScale;
+    private int themeScale=1;
+
+    @OneToOne(mappedBy = "settings")
+    private Organisation organisation;
 
 
 

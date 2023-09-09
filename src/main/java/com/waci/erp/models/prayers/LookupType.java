@@ -1,6 +1,7 @@
 package com.waci.erp.models.prayers;
 
 public enum LookupType {
+    OTHER_TYPE(0,"Other"),
     PRAYER_REQUEST_TYPE(1,"Prayer Request Types"),
     TESTIMONY_TYPE(2,"Testimony Types"),
     SALUTATION(3,"Salutations"),

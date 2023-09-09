@@ -1,7 +1,6 @@
 package com.waci.erp.models.finance;
 
 import com.waci.erp.models.prayers.Member;
-import com.waci.erp.models.prayers.OrganisationBaseEntity;
 import com.waci.erp.shared.models.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "pledges")
-public class Pledge extends OrganisationBaseEntity {
+public class Pledge extends BaseEntity {
 
     @Column(name = "amount")
     private float amount;

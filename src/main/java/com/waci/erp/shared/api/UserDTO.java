@@ -15,6 +15,7 @@ public class UserDTO extends BaseDTO {
     public long[] roleIds;
     public String emailAddress;
     public String lastName;
+    public String organisationCode;
     public String firstName;
     public String gender;
     public long genderId;
@@ -34,6 +35,7 @@ public class UserDTO extends BaseDTO {
         dto.firstName = model.getFirstName();
         dto.phoneNumber = model.getPhoneNumber();
         dto.lastName = model.getLastName();
+       dto.organisationCode = model.getOrganisationCode();
         dto.roles = model.getRoles().stream().map(r->RoleDTO.fromRole(r)).collect(Collectors.toList());
         dto.isSuperAdmin = (model.hasAdministrativePrivileges());
 

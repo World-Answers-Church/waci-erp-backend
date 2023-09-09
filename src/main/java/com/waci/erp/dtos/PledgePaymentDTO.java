@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public class PledgePaymentDTO extends BaseDTO {
     private long programId;
     private LocalDateTime datePaid;
 
-    public static PledgePaymentDTO fromModel(PledgePayment model){
+    public static PledgePaymentDTO fromModel(@NonNull PledgePayment model){
         PledgePaymentDTO dto= new PledgePaymentDTO();
         dto.setAmount(model.getAmount());
         dto.setPledgeId(model.getPledge().getId());
@@ -43,6 +44,7 @@ public class PledgePaymentDTO extends BaseDTO {
         dto.setChangedByUserName(model.getChangedByUsername());
         dto.setDateCreated(model.getDateCreated());
         dto.setDateChanged(model.getDateChanged());
+        dto.setOrganisationCode(model.getOrganisationCode());
         return dto;
     }
 }

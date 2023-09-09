@@ -26,22 +26,24 @@ private long id;
         this.value = value;
     }
 
-    public LookupValueDTO fromModel(LookupValue model){
-        this.setValue(model.getValue());
-        this.setTypeName(model.getType().name());
-        this.setDescription(model.getDescription());
-        this.setImageUrl(model.getImageUrl());
-        this.setTypeId(model.getType().getId());
+    public static LookupValueDTO fromModel(LookupValue model){
+        LookupValueDTO dto= new LookupValueDTO();
+        dto.setValue(model.getValue());
+        dto.setTypeName(model.getType().getUiName());
+        dto.setDescription(model.getDescription());
+        dto.setImageUrl(model.getImageUrl());
+        dto.setTypeId(model.getType().getId());
 
-        this.setId(model.getId());
-        this.setRecordStatus(model.getRecordStatus().name());
-        this.setCreatedById(model.getCreatedById());
-        this.setCreatedByUsername(model.getCreatedByUsername());
-        this.setChangedById(model.getChangedById());
-        this.setChangedByUserName(model.getChangedByUsername());
-        this.setDateCreated(model.getDateCreated());
-        this.setDateChanged(model.getDateChanged());
-        return this;
+        dto.setId(model.getId());
+        dto.setRecordStatus(model.getRecordStatus().name());
+        dto.setCreatedById(model.getCreatedById());
+        dto.setCreatedByUsername(model.getCreatedByUsername());
+        dto.setChangedById(model.getChangedById());
+        dto.setChangedByUserName(model.getChangedByUsername());
+        dto.setDateCreated(model.getDateCreated());
+        dto.setDateChanged(model.getDateChanged());
+        dto.setOrganisationCode(model.getOrganisationCode());
+        return dto;
     }
 
 

@@ -42,6 +42,10 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
     @Override
     public T save(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         return super.save(entity);
     }
 
@@ -51,6 +55,10 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         if(user!=null) {
             entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
         }
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         return super.save(entity);
     }
 
@@ -58,6 +66,10 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
     @Override
     public T saveAndFlush(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         T result = super.save(entity);
         super.flush();
         return result;
@@ -71,18 +83,30 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
     @Override
     public T merge(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         return super.merge(entity);
     }
 
     @Override
     public T merge(T entity) {
         entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         return super.merge(entity);
     }
 
     @Override
     public T mergeAndFlush(T entity, User loggedInUser) {
         entity.addAuditTrail(loggedInUser);
+        if(UserDetailsContext.getLoggedInOrganisation()!=null) {
+            entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+        }
         T result = super.merge(entity);
         super.flush();
         return result;
