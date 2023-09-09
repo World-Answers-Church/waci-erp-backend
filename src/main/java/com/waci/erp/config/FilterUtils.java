@@ -19,7 +19,8 @@ public class FilterUtils {
                     "/api-docs",
                     "/api/v1/auth/refresh/token",
                     "/api/v1/auth/login",
-                    "/api/v1/lookups"
+                    "/api/v1/lookups",
+                    "/api/v1/organisations"
             )
     );
 

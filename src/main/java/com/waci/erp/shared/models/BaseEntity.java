@@ -40,8 +40,10 @@ public class BaseEntity implements Auditable {
     @Column(name = "custom_prop_one")
     private String customPropOne;
 
-    @Column(name = "organisation_code")
+    @Column(name = "organization_code")
     private String organisationCode;
+    @Column(name = "organization_id")
+    private Long organisationId;
 
     public BaseEntity() {
         this.id = Long.valueOf(0);
@@ -67,7 +69,7 @@ public class BaseEntity implements Auditable {
             this.setCreatedByUsername(loggedInUser.getFullName());
             this.setDateCreated(LocalDateTime.now());
         }
-        this.setOrganisationCode(loggedInUser.getOrganisationCode());
+       
         this.setChangedById(loggedInUser.getId());
         this.setChangedByUsername(loggedInUser.getFullName());
         this.setDateChanged(LocalDateTime.now());
@@ -103,6 +105,14 @@ public class BaseEntity implements Auditable {
 
     public void setChangedById(long changedById) {
         this.changedById = changedById;
+    }
+
+    public Long getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(Long organisationId) {
+        this.organisationId = organisationId;
     }
 
     public String getCreatedByUsername() {

@@ -1,6 +1,7 @@
 
 package com.waci.erp.shared.utils;
 
+import com.google.gson.Gson;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.shared.constants.RecordStatus;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +33,8 @@ public class CustomSearchUtils {
         search.addSortDesc("id");
 
         if(UserDetailsContext.getLoggedInOrganisation()!=null){
-            search.addFilterEqual("organisationCode",UserDetailsContext.getLoggedInOrganisation().getCode());
+            Logger.getAnonymousLogger().severe("Logged in org>>>>>"+new Gson().toJson(UserDetailsContext.getLoggedInOrganisation().getCode()));
+            search.addFilterEqual("organisationId",UserDetailsContext.getLoggedInOrganisation().getId());
         }
 
         if (StringUtils.isNotBlank(query) && searchTermSatisfiesQueryCriteria(query)) {

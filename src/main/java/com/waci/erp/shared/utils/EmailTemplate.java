@@ -6,7 +6,7 @@ package com.waci.erp.shared.utils;
  */
 public class EmailTemplate {
 
-    public static String DEFAULT_TEMPLATE = "<!doctype html>\n"
+    private static String DEFAULT_TEMPLATE = "<!doctype html>\n"
             + "<html>\n"
             + "  <head>\n"
             + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n"
@@ -365,7 +365,7 @@ public class EmailTemplate {
             + "                                <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
             + "                                  <tbody>\n"
             + "                                    <tr>\n"
-            + "                                      <td> <a href=\"http://revivalgateway.org\" target=\"_blank\">Visit RGW</a> </td>\n"
+            + "                                      <td> <a href=\"http://thankful-desert-09d48ca10.3.azurestaticapps.net\" target=\"_blank\">Visit Church ERP</a> </td>\n"
             + "                                    </tr>\n"
             + "                                  </tbody>\n"
             + "                                </table>\n"
@@ -388,13 +388,13 @@ public class EmailTemplate {
             + "              <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
             + "                <tr>\n"
             + "                  <td class=\"content-block\">\n"
-            + "                    <span class=\"apple-link\">Revival Gateway, Kampala, Uganda</span>\n"
+            + "                    <span class=\"apple-link\">Church ERP, Kampala, Uganda</span>\n"
             + "                    <br> Don't like these emails? <a href=\"http://i.imgur.com/CScmqnj.gif\">Unsubscribe</a>.\n"
             + "                  </td>\n"
             + "                </tr>\n"
             + "                <tr>\n"
             + "                  <td class=\"content-block powered-by\">\n"
-            + "                    Powered by <a href=\"http://www.pahappa.com\">Pahappa</a>.\n"
+            + "                    Powered by <a href=\"http://www.byaffe.com\">Byaffe Code</a>.\n"
             + "                  </td>\n"
             + "                </tr>\n"
             + "              </table>\n"

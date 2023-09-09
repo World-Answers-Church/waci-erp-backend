@@ -65,15 +65,14 @@ public class TokenProvider {
             if (userAccount == null) {
                 throw new JWTVerificationException("Invalid Credentials in Token");
             }
+            UserDetailsContext.clear();
             UserDetailsContext.setLoggedInUser(userAccount);
-
             if (!userAccount.hasAdministrativePrivileges()) {
                 String organisationCode = decodedJWT.getClaim(ORGANISATION_CODE_KEY).asString();
                 Organisation organisation = organisationService.getOrganisationByCode(organisationCode);
                 if (organisation == null) {
                     throw new JWTVerificationException("Invalid Organisation");
                 }
-                userAccount.setOrganisationCode(organisationCode);
                 UserDetailsContext.setLoggedInOrganisation(organisation);
             }
 

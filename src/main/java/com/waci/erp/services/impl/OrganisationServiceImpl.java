@@ -16,19 +16,31 @@ import com.waci.erp.shared.constants.Gender;
 import com.waci.erp.shared.exceptions.OperationFailedException;
 import com.waci.erp.shared.models.User;
 import com.waci.erp.shared.utils.CustomSearchUtils;
+import com.waci.erp.shared.utils.MailService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+
+import static com.waci.erp.shared.constants.MessageConstants.ORGANISATION_REGISTRATION_EMAIL_CONTENT;
+import static com.waci.erp.shared.constants.MessageConstants.ORGANISATION_REGISTRATION_EMAIL_SUBJECT;
 
 @Service
 @Transactional
 public class OrganisationServiceImpl implements OrganisationService {
     @Autowired
     OrganisationDao organisationDao;
+
+    @Autowired
+    @Qualifier("vertxMailServiceImpl")
+    MailService mailService;
     @Autowired
     UserService userService;
 
@@ -44,9 +56,7 @@ public class OrganisationServiceImpl implements OrganisationService {
         if (dto.getId() > 0) {
             organisation = getOrganisationById(dto.getId());
         }
-        if (dto.getCategoryId() == 0) {
-            throw new OperationFailedException("Missing category");
-        }
+
         if (StringUtils.isBlank(dto.getName())) {
             throw new OperationFailedException("Missing name");
         }
@@ -66,12 +76,14 @@ public class OrganisationServiceImpl implements OrganisationService {
             throw new OperationFailedException("Organisation with same primary phone number exists");
         }
 
-        LookupValue category = lookupValueDao.getLookupValueByTypeAndValue(LookupType.ORGANISATION_CATEGORIES, (int) dto.getCategoryId());
-
+        if(dto.getCategoryId()>0) {
+            LookupValue category = lookupValueDao.getLookupValueByTypeAndValue(LookupType.ORGANISATION_CATEGORIES, (int) dto.getCategoryId());
+            organisation.setCategory(category);
+        }
         organisation.setId(dto.getId());
         organisation.setName(dto.getName());
-        organisation.setCategory(category);
         organisation.setCode(dto.getCode().toUpperCase());
+        organisation.setOrganisationCode(dto.getCode().toUpperCase());
         organisation.setEmailAddress(dto.getEmailAddress());
         organisation.setPhysicalAddress(dto.getPhysicalAddress());
         organisation.setPrimaryPhoneNumber(dto.getPrimaryPhoneNumber());
@@ -92,12 +104,26 @@ public class OrganisationServiceImpl implements OrganisationService {
     private void createDefaultUser(Organisation organisation) {
         User user = new User();
         user.setEmailAddress(organisation.getEmailAddress());
-        user.setFirstName(organisation.getName());
+        user.setFirstName(organisation.getCode());
         user.setLastName("Admin");
+        user.setPhoneNumber(organisation.getPrimaryPhoneNumber());
         user.setUsername(organisation.getCode());
         user.setPassword(organisation.getPrimaryPhoneNumber());
-        user.setOrganisationCode(organisation.getOrganisationCode());
+        user.setOrganisationCode(organisation.getCode());
         userService.saveUser(user);
+        new Thread(() -> {
+            try {
+                mailService.sendEmail(
+                        user.getEmailAddress(),
+                        ORGANISATION_REGISTRATION_EMAIL_SUBJECT,
+                        MessageFormat.format(ORGANISATION_REGISTRATION_EMAIL_CONTENT,
+                                user.getOrganisationCode(), user.getUsername(), user.getPhoneNumber())
+                );
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).run();
     }
 
     @Override
@@ -113,7 +139,6 @@ public class OrganisationServiceImpl implements OrganisationService {
             throw new OperationFailedException("Missing organisation");
         }
 
-
         Organisation organisation = getOrganisationById(dto.getOrganisationId());
 
         model.setId(dto.getId());
@@ -127,7 +152,6 @@ public class OrganisationServiceImpl implements OrganisationService {
         model.setTopbarTheme(dto.getTopbarTheme());
         model.setThemeColor(dto.getThemeColor());
         model.setThemeScale(dto.getThemeScale());
-
 
         return organisationSettingsDao.save(model);
     }
