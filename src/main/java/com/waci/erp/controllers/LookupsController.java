@@ -58,6 +58,7 @@ public class LookupsController {
         lookupService.save(lookupValueDTO);
         return ResponseEntity.ok().body(new BaseResponse(true));
     }
+
     /**
      * Endpoint to register a microservice
      *

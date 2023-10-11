@@ -2,6 +2,7 @@ package com.waci.erp.controllers;
 
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PledgePaymentDTO;
+import com.waci.erp.models.finance.PledgePayment;
 import com.waci.erp.services.PledgePaymentService;
 import com.waci.erp.services.impl.PledgePaymentServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +42,14 @@ public class PledgePaymentController {
                                                               @RequestParam(value = "offset", required = true) int offset,
                                                               @RequestParam(value = "limit", required = true) int limit) {
         Search search = PledgePaymentServiceImpl.composeSearchObject(searchTerm);
-        List<PledgePaymentDTO> pledgePayments = pledgePaymentService.getList(search, offset, limit).stream().map(PledgePaymentDTO::fromModel).collect(Collectors.toList());
+        List<PledgePaymentDTO> pledgePayments = new ArrayList<>();
+        for (PledgePayment pledgePayment : pledgePaymentService.getList(search, offset, limit)) {
+            PledgePaymentDTO pledgePaymentDTO = PledgePaymentDTO.fromModel(pledgePayment);
+
+            pledgePayments.add(pledgePaymentDTO);
+        }
+
+
         int totalRecords = pledgePaymentService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(pledgePayments, totalRecords, offset, limit));
 
