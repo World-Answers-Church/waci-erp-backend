@@ -30,13 +30,13 @@ public class FundraisingCause extends BaseEntity {
     private FundraisingPlanTypes fundraisingPlanType;
 
     @Column(name = "minimum_contribution")
-    private float minimumContribution ;
+    private Float minimumContribution ;
 
     @Column(name = "periodic_contribution_amount")
-    private float periodicContributionAmount ;
+    private Float periodicContributionAmount ;
 
     @Column(name = "target_amount")
-    private float targetAmount ;
+    private Float targetAmount ;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "reccuring_payment_frequency")
