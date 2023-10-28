@@ -65,9 +65,7 @@ public class PledgeController {
             search.addFilterEqual("fundraisingCause",fundraisingCause);
         }
         if(memberId!=null){
-            Member member=memberService.getMemberById(memberId);
-
-            search.addFilterEqual("member",member);
+            search.addFilterEqual("member.id",memberId);
         }
 
         if(statusId!=null){

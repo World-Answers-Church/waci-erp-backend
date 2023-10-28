@@ -17,6 +17,9 @@ public class OrganisationDTO extends BaseDTO {
     private String otherPhoneNumber;
     private String logoUrl;
     public static OrganisationDTO fromModel(Organisation model){
+        if(model==null){
+            return  null;
+        }
         OrganisationDTO dto= new OrganisationDTO();
         dto.setName(model.getName());
         dto.setPrimaryPhoneNumber(model.getPrimaryPhoneNumber());

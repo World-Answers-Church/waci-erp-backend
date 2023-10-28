@@ -1,5 +1,7 @@
 package com.waci.erp.controllers;
 
+import com.waci.erp.dtos.OrganisationDTO;
+import com.waci.erp.services.OrganisationService;
 import com.waci.erp.services.UserService;
 import com.waci.erp.shared.api.AuthDTO;
 import com.waci.erp.shared.api.FullUserDTO;
@@ -29,6 +31,9 @@ public class AuthController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    OrganisationService organisationService;
+
     /**
      * Endpoint to register a microservice
      *
@@ -38,8 +43,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<FullUserDTO> login(@RequestBody AuthDTO authDTO) throws ValidationException {
         UserDTO user = userService.authenticateUser(authDTO);
+        OrganisationDTO church = OrganisationDTO.fromModel(organisationService.getOrganisationByCode(user.getOrganisationCode()));
         TokenProvider.TokenPair tokenPair = tokenProvider.createToken(user, authDTO.isRememberMe());
-        return ResponseEntity.ok().body(new FullUserDTO(user, tokenPair));
+        return ResponseEntity.ok().body(new FullUserDTO(user, tokenPair, church));
     }
 
 
