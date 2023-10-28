@@ -1,5 +1,6 @@
 package com.waci.erp.services.impl;
 
+import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.daos.MemberDao;
 import com.waci.erp.daos.PledgeDao;
@@ -54,7 +55,8 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
         if (dto.getAmount() <= 0) {
             throw new OperationFailedException("Invalid payment amount");
         }
-       Pledge pledge = pledgeDao.findById(dto.getPledgeId()).orElseThrow(() -> new ValidationFailedException("Pledge not found"));
+
+        Pledge pledge = pledgeDao.findById(dto.getPledgeId()).orElseThrow(() -> new ValidationFailedException("Pledge not found"));
 
         pledgePayment.setId(dto.getId());
         pledgePayment.setPledge(pledge);
@@ -68,6 +70,7 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
     public List<PledgePayment> getList(Search search, int offset, int limit) {
         search.setMaxResults(limit);
         search.setFirstResult(offset);
+
         return pledgePaymentDao.search(search);
     }
 
@@ -83,19 +86,25 @@ public class PledgePaymentServiceImpl implements PledgePaymentService {
 
     @Override
     public List<PledgePayment> getByMember(Member member) {
-        return pledgePaymentDao.search(new Search().addFilterEqual("member", member));
+        return pledgePaymentDao.search(new Search().addFilterEqual("pledge.member", member));
     }
 
 
+    public List<PledgePayment> getByPledge(Pledge pledge) {
+        return pledgePaymentDao.search(new Search().addFilterEqual("pledge", pledge));
+    }
+    public double getTotalPayments(Pledge pledge) {
+        return pledgePaymentDao.searchUnique(new Search().addFilterEqual("pledge", pledge)
+                .addField("amount", Field.OP_SUM));
+    }
 
     public static Search composeSearchObject(String searchTerm) {
-        Search search = CustomSearchUtils.generateSearchTerms(searchTerm,
+
+        return CustomSearchUtils.generateSearchTerms(searchTerm,
                 Arrays.asList(
                         "pledge.member.firstName",
                         "pledge.member.lastName",
                         "pledge.fundraisingCause.name",
                         "pledge.member.phoneNumber"));
-
-        return search;
     }
 }

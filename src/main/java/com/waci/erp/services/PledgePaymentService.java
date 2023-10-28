@@ -2,6 +2,7 @@ package com.waci.erp.services;
 
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PledgePaymentDTO;
+import com.waci.erp.models.finance.Pledge;
 import com.waci.erp.models.finance.PledgePayment;
 import com.waci.erp.models.prayers.Member;
 
@@ -43,4 +44,12 @@ public interface PledgePaymentService {
      */
     List<PledgePayment> getByMember(Member member);
 
+    /**
+     *
+     * @param pledge
+     * @return
+     */
+     List<PledgePayment> getByPledge(Pledge pledge) ;
+
+   double getTotalPayments(Pledge pledge) ;
 }

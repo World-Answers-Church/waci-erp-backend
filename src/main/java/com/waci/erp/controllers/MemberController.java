@@ -32,7 +32,11 @@ public class MemberController {
         MemberDTO responseDTO = MemberDTO.fromModel(memberService.saveMember(memberDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
-
+    @PostMapping("/{id}")
+    public ResponseEntity<MemberDTO> getMemberById(@PathVariable(value = "id") Long id) {
+        MemberDTO responseDTO = MemberDTO.fromModel(memberService.getMemberById(id));
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
     //Build get members
     @GetMapping("")

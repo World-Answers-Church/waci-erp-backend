@@ -3,10 +3,12 @@ package com.waci.erp.controllers;
 import com.googlecode.genericdao.search.Search;
 import com.waci.erp.dtos.PledgeDTO;
 import com.waci.erp.models.finance.FundraisingCause;
+import com.waci.erp.models.finance.Pledge;
 import com.waci.erp.models.finance.PledgeStatus;
 import com.waci.erp.models.prayers.Member;
 import com.waci.erp.services.FundraisingCauseService;
 import com.waci.erp.services.MemberService;
+import com.waci.erp.services.PledgePaymentService;
 import com.waci.erp.services.PledgeService;
 import com.waci.erp.services.impl.PledgeServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,9 @@ public class PledgeController {
 
     @Autowired
     PledgeService pledgeService;
+
+    @Autowired
+    PledgePaymentService pledgePaymentService;
 
     @Autowired
     FundraisingCauseService fundraisingCauseService;
@@ -59,9 +65,7 @@ public class PledgeController {
             search.addFilterEqual("fundraisingCause",fundraisingCause);
         }
         if(memberId!=null){
-            Member member=memberService.getMemberById(memberId);
-
-            search.addFilterEqual("member",member);
+            search.addFilterEqual("member.id",memberId);
         }
 
         if(statusId!=null){
@@ -70,7 +74,12 @@ public class PledgeController {
         }
 
 
-        List<PledgeDTO> Pledges = pledgeService.getList(search, offset, limit).stream().map(PledgeDTO::fromModel).collect(Collectors.toList());
+        List<PledgeDTO> Pledges = new ArrayList<>();
+        for (Pledge pledge : pledgeService.getList(search, offset, limit)) {
+            PledgeDTO pledgeDTO = PledgeDTO.fromModel(pledge);
+            pledgeDTO.setAmountPaid((float) pledgePaymentService.getTotalPayments(pledge));
+            Pledges.add(pledgeDTO);
+        }
         int totalRecords = pledgeService.count(search);
         return ResponseEntity.ok().body(new ResponseList<>(Pledges, totalRecords, offset, limit));
 

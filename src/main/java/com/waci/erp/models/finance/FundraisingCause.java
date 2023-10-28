@@ -32,7 +32,7 @@ public class FundraisingCause extends BaseEntity {
     @Column(name = "minimum_contribution")
     private float minimumContribution ;
 
-    @Column(name = "periodic_contribution_name")
+    @Column(name = "periodic_contribution_amount")
     private float periodicContributionAmount ;
 
     @Column(name = "target_amount")

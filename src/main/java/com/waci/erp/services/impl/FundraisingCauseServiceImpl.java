@@ -50,21 +50,22 @@ public class FundraisingCauseServiceImpl implements FundraisingCauseService {
             throw new OperationFailedException("Missing name");
         }
         FundraisingPlanTypes fundraisingPlanType = FundraisingPlanTypes.getById(dto.getFundraisingPlanTypeId());
-        if (fundraisingPlanType == null) {
-            throw new OperationFailedException("Invalid Fundraising Plan Type");
-        }
+
         ReccuringPaymentFrequency reccuringPaymentFrequency = ReccuringPaymentFrequency.getById(dto.getFundraisingPlanTypeId());
+        if (fundraisingPlanType.equals(FundraisingPlanTypes.FIXED_VALUE)&& dto.getFixedOneTimeContribution() <=0) {
+            throw new OperationFailedException("Fixed One Time Contribution is required for Fixed Value types");
+        }
 
         if (fundraisingPlanType.equals(FundraisingPlanTypes.FIXED_RECURRING)&& reccuringPaymentFrequency == null) {
-            throw new OperationFailedException("Invalid Reccuring Payment Frequency");
+            throw new OperationFailedException("Re-curring Payment Frequency is required for Fixed Recurring Type");
         }
 
         if (fundraisingPlanType.equals(FundraisingPlanTypes.FIXED_RECURRING)&& dto.getPeriodicContributionAmount() <=0) {
-            throw new OperationFailedException("Invalid Reccuring periodic contribution");
+            throw new OperationFailedException("Periodic Contribution Amount is required for Fixed Recurring Type");
         }
 
 
-     fundraisingCause.setCategory(type);
+        fundraisingCause.setCategory(type);
         fundraisingCause.setFundraisingPlanType(fundraisingPlanType);
         fundraisingCause.setMinimumContribution(dto.getMinimumContribution());
         fundraisingCause.setTargetAmount(dto.getTargetAmount());

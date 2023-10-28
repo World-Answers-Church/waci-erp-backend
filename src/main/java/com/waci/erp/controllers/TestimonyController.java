@@ -36,9 +36,17 @@ public class TestimonyController {
 
     @GetMapping("")
     public ResponseEntity<ResponseList<TestimonyDTO>> search(@RequestParam("searchTerm") String searchTerm,
-                                                          @RequestParam("offset") int limit,
-                                                          @RequestParam("limit") int offset) {
+                                                          @RequestParam("offset") Integer limit,
+                                                          @RequestParam("limit") Integer offset,
+                                                             @RequestParam("memberId") Long memberId
+                                                             ) {
         Search search= TestimonyServiceImpl.composeSearchObject(searchTerm);
+     if(memberId!=null){
+         search.addFilterEqual("member.id",memberId);
+     }
+
+
+
         long recordCount= dbService.count(search);
         List<TestimonyDTO> records= dbService.getList(search,offset,limit).stream().map(r->new TestimonyDTO().fromModel(r)).collect(Collectors.toList());
         return ResponseEntity.ok().body(new ResponseList<>(records,recordCount,offset,limit));

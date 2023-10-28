@@ -38,8 +38,14 @@ public class PrayerRequestController {
     @GetMapping("")
     public ResponseEntity<ResponseList<PrayerRequestDTO>> search(@RequestParam("searchTerm") String searchTerm,
                                                           @RequestParam("offset") int limit,
-                                                          @RequestParam("limit") int offset) {
+                                                          @RequestParam("limit") int offset,
+                                                                 @RequestParam("memberId") Long memberId) {
         Search search= PrayerRequestServiceImpl.composeSearchObject(searchTerm);
+
+        if(memberId!=null){
+            search.addFilterEqual("member.id",memberId);
+        }
+
         long recordCount= dbService.count(search);
         List<PrayerRequestDTO> records= dbService.getList(search,offset,limit).stream().map(r->new PrayerRequestDTO().fromModel(r)).collect(Collectors.toList());
         return ResponseEntity.ok().body(new ResponseList<>(records,recordCount,offset,limit));

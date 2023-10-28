@@ -1,11 +1,12 @@
 package com.waci.erp.models.finance;
 
 import com.waci.erp.models.prayers.LookupType;
+import com.waci.erp.shared.exceptions.ValidationFailedException;
 
 public enum FundraisingPlanTypes {
-    OPEN(1,"Open"),
-    FIXED_VALUE(2,"Fixed Value"),
-    FIXED_RECURRING(3,"Reccurring and Fixed");
+    OPEN(1,"Open (any amount)"),
+    FIXED_VALUE(2,"Fixed Value (once)"),
+    FIXED_RECURRING(3,"Recurring and Fixed (periodic payment)");
 
     private int id;
     private String uiName;
@@ -28,7 +29,7 @@ public enum FundraisingPlanTypes {
                 return permissionConstant;
             }
         }
-        return null;
+     throw new ValidationFailedException(String.format("FundraisingPlanType with id %d was not found", id));
     }
 
 }
