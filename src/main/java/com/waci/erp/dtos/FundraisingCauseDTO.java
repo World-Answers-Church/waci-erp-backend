@@ -18,11 +18,11 @@ public class FundraisingCauseDTO extends BaseDTO {
     private String description;
     private String imageUrl;
     private String fundraisingPlanTypeName;
-    private int fundraisingPlanTypeId;
-    private float minimumContribution ;
-    private float fixedOneTimeContribution ;
-    private float targetAmount ;
-    private float periodicContributionAmount;
+    private Integer fundraisingPlanTypeId;
+    private Float minimumContribution ;
+    private Float fixedOneTimeContribution ;
+    private Float targetAmount ;
+    private Float periodicContributionAmount;
     private String reccuringPaymentFrequencyName;
     private int reccuringPaymentFrequencyId;
 
