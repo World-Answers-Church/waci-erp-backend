@@ -43,7 +43,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<FullUserDTO> login(@RequestBody AuthDTO authDTO) throws ValidationException {
         UserDTO user = userService.authenticateUser(authDTO);
-        OrganisationDTO church = OrganisationDTO.fromModel(organisationService.getOrganisationByCode(user.getOrganisationCode()));
+        OrganisationDTO church=null;
+        if(!user.isSuperAdmin) {
+             church = OrganisationDTO.fromModel(organisationService.getOrganisationByCode(user.getOrganisationCode()));
+        }
         TokenProvider.TokenPair tokenPair = tokenProvider.createToken(user, authDTO.isRememberMe());
         return ResponseEntity.ok().body(new FullUserDTO(user, tokenPair, church));
     }

@@ -5,6 +5,7 @@ import com.waci.erp.dtos.MemberDTO;
 import com.waci.erp.services.MemberService;
 import com.waci.erp.services.impl.MemberServiceImpl;
 import com.waci.erp.shared.api.ResponseList;
+import com.waci.erp.shared.api.ResponseObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +33,10 @@ public class MemberController {
         MemberDTO responseDTO = MemberDTO.fromModel(memberService.saveMember(memberDTO));
         return ResponseEntity.ok().body(responseDTO);
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<MemberDTO> getMemberById(@PathVariable(value = "id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject<MemberDTO>> getMemberById(@PathVariable(value = "id") Long id) {
         MemberDTO responseDTO = MemberDTO.fromModel(memberService.getMemberById(id));
-        return ResponseEntity.ok().body(responseDTO);
+        return ResponseEntity.ok().body(new ResponseObject<>( responseDTO));
     }
 
     //Build get members

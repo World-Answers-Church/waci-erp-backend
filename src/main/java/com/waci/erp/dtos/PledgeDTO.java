@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class PledgeDTO extends BaseDTO {
-    private float amount;
-    private float amountPaid;
+    private Float amount;
+    private Float amountPaid;
     private String memberName;
     private long memberId;
     private String fundraisingCauseName;
