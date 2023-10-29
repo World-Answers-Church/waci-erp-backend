@@ -190,7 +190,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     public Organisation getOrganisationByCode(String code) {
-        return organisationDao.searchUnique(new Search().addFilterEqual("code", code.toUpperCase()));
+         return organisationDao.searchUnique(new Search().addFilterEqual("code", code.toUpperCase()));
     }
 
     public static Search composeSearchObject(String searchTerm) {

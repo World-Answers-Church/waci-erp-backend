@@ -44,7 +44,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         entity.addAuditTrail(loggedInUser);
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         return super.save(entity);
     }
@@ -57,7 +57,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         }
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         return super.save(entity);
     }
@@ -68,7 +68,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         entity.addAuditTrail(loggedInUser);
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         T result = super.save(entity);
         super.flush();
@@ -85,7 +85,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         entity.addAuditTrail(loggedInUser);
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         return super.merge(entity);
     }
@@ -95,7 +95,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         entity.addAuditTrail(UserDetailsContext.getLoggedInUser());
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         return super.merge(entity);
     }
@@ -105,7 +105,7 @@ public class BaseDAOImpl<T extends BaseEntity> extends GenericDAOImpl<T, Long> i
         entity.addAuditTrail(loggedInUser);
         if(UserDetailsContext.getLoggedInOrganisation()!=null) {
             entity.setOrganisationCode(UserDetailsContext.getLoggedInOrganisation().getCode());
-            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getOrganisationId());
+            entity.setOrganisationId(UserDetailsContext.getLoggedInOrganisation().getId());
         }
         T result = super.merge(entity);
         super.flush();

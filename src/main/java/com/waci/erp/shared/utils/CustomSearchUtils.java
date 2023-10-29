@@ -34,7 +34,7 @@ public class CustomSearchUtils {
 
         if(UserDetailsContext.getLoggedInOrganisation()!=null){
             Logger.getAnonymousLogger().severe("Logged in org>>>>>"+new Gson().toJson(UserDetailsContext.getLoggedInOrganisation().getCode()));
-            search.addFilterEqual("organisationId",UserDetailsContext.getLoggedInOrganisation().getId());
+            search.addFilterEqual("organisationCode",UserDetailsContext.getLoggedInOrganisation().getCode());
         }
 
         if (StringUtils.isNotBlank(query) && searchTermSatisfiesQueryCriteria(query)) {
